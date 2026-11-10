@@ -189,8 +189,8 @@ textarea{min-height:96px;resize:vertical}
   <form id="tb-login-form" novalidate>
     <h1><span>In Terra</span>Tagesbericht</h1>
     <p>Bitte mit den Zugangsdaten von In Terra anmelden.</p>
-    <label for="tb-email">E-Mail<input id="tb-email" type="email" autocomplete="username" inputmode="email" required></label>
-    <label for="tb-pw">Passwort<input id="tb-pw" type="password" autocomplete="current-password" required></label>
+    <label for="tb-email">E-Mail<input id="tb-email" type="email" autocomplete="username" inputmode="email" autocapitalize="none" autocorrect="off" spellcheck="false" required></label>
+    <label for="tb-pw">Passwort<input id="tb-pw" type="password" autocomplete="current-password" autocapitalize="none" autocorrect="off" spellcheck="false" required></label>
     <div class="msg" id="tb-login-msg" role="status"></div>
     <button class="save" id="tb-login-btn" type="submit">Anmelden</button>
   </form>
@@ -323,7 +323,7 @@ textarea{min-height:96px;resize:vertical}
   $("tb-login-form").addEventListener("submit", async function(ev){
     ev.preventDefault();
     var m = $("tb-login-msg"), btn = $("tb-login-btn");
-    var email = $("tb-email").value.trim(), pw = $("tb-pw").value;
+    var email = $("tb-email").value.trim().toLowerCase(), pw = $("tb-pw").value.trim();
     if(!email || !pw){ m.textContent = "Bitte E-Mail und Passwort eingeben."; m.className = "msg err"; return; }
     btn.disabled = true; m.textContent = "Meldet an …"; m.className = "msg";
     var r = await sb.auth.signInWithPassword({ email: email, password: pw });
