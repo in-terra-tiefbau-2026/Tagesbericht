@@ -180,6 +180,10 @@ textarea{min-height:96px;resize:vertical}
 .tb-konto{display:flex;gap:10px;align-items:center;font-size:.8rem;color:var(--muted);min-width:0}
 .tb-konto span{overflow-wrap:anywhere}
 .tb-konto button{font:600 .8rem var(--f-body);background:none;border:1px solid var(--line);border-radius:6px;color:var(--ink);padding:4px 8px;min-height:32px;cursor:pointer}
+.tb-konto{flex-wrap:wrap}
+#tb-pw-box{position:fixed;inset:0;z-index:40;background:color-mix(in srgb,var(--bg) 92%,transparent);overflow:auto;padding-block:calc(40px + env(safe-area-inset-top,0px)) 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+#tb-pw-box form{max-width:420px;margin:0 auto;display:grid;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px}
+#tb-pw-box h2{font-family:var(--f-display);margin:0}
 </style>
 <div id="tb-login">
   <form id="tb-login-form" novalidate>
@@ -189,6 +193,16 @@ textarea{min-height:96px;resize:vertical}
     <label for="tb-pw">Passwort<input id="tb-pw" type="password" autocomplete="current-password" required></label>
     <div class="msg" id="tb-login-msg" role="status"></div>
     <button class="save" id="tb-login-btn" type="submit">Anmelden</button>
+  </form>
+</div>
+<div id="tb-pw-box" hidden>
+  <form id="tb-pw-form" novalidate>
+    <h2>Passwort ändern</h2>
+    <label for="tb-pw1">Neues Passwort <span class="hint">mindestens 10 Zeichen</span><input id="tb-pw1" type="password" autocomplete="new-password"></label>
+    <label for="tb-pw2">Neues Passwort wiederholen<input id="tb-pw2" type="password" autocomplete="new-password"></label>
+    <div class="msg" id="tb-pw-msg" role="status"></div>
+    <button class="save" id="tb-pw-ok" type="submit">Passwort speichern</button>
+    <button class="btn" id="tb-pw-abbr" type="button">Abbrechen</button>
   </form>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
@@ -275,8 +289,23 @@ textarea{min-height:96px;resize:vertical}
     var s = document.createElement("span"); s.textContent = email;
     var b = document.createElement("button"); b.type = "button"; b.textContent = "Abmelden";
     b.addEventListener("click", function(){ tokenMerken(null); sb.auth.signOut().finally(function(){ location.reload(); }); });
-    d.append(s, b); brand.appendChild(d);
+    var p = document.createElement("button"); p.type = "button"; p.textContent = "Passwort ändern";
+    p.addEventListener("click", function(){ $("tb-pw-box").hidden = false; $("tb-pw1").focus(); });
+    d.append(s, p, b); brand.appendChild(d);
   }
+  $("tb-pw-abbr").addEventListener("click", function(){ $("tb-pw-box").hidden = true; $("tb-pw-form").reset(); $("tb-pw-msg").textContent = ""; });
+  $("tb-pw-form").addEventListener("submit", async function(ev){
+    ev.preventDefault();
+    var m = $("tb-pw-msg"), a = $("tb-pw1").value, b2 = $("tb-pw2").value;
+    if(a.length < 10){ m.textContent = "Bitte mindestens 10 Zeichen verwenden."; m.className = "msg err"; return; }
+    if(a !== b2){ m.textContent = "Die beiden Passwörter sind nicht gleich."; m.className = "msg err"; return; }
+    $("tb-pw-ok").disabled = true; m.textContent = "Speichert …"; m.className = "msg";
+    var r = await sb.auth.updateUser({ password: a });
+    $("tb-pw-ok").disabled = false;
+    if(r.error){ m.textContent = /different|same/i.test(r.error.message) ? "Das neue Passwort muss sich vom alten unterscheiden." : "Passwort nicht geändert. Bitte erneut versuchen."; m.className = "msg err"; return; }
+    $("tb-pw-form").reset(); m.textContent = "Passwort geändert. Ab jetzt mit dem neuen Passwort anmelden."; m.className = "msg ok";
+    setTimeout(function(){ $("tb-pw-box").hidden = true; m.textContent = ""; }, 2500);
+  });
   async function angemeldet(s){
     var r = await sb.rpc("ist_freigegeben");
     if(r.error || !r.data){
