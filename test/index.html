@@ -201,6 +201,12 @@ textarea{min-height:96px;resize:vertical}
 .tg-nutz button[aria-pressed="true"].tg-benutzt{background:#2b8a3e;color:#fff}
 .tg-nutz button[aria-pressed="true"].tg-unbenutzt{background:#868e96;color:#fff}
 .tg-nutz button[aria-pressed="true"].tg-gelagert{background:#1971c2;color:#fff}
+.tg-popup{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.45);display:grid;place-items:end center;padding:16px}
+.tg-popup[hidden]{display:none!important}
+.tg-popup-in{background:var(--card);color:var(--ink);border-radius:14px;padding:18px;width:100%;max-width:520px;display:grid;gap:12px;max-height:85vh;overflow:auto}
+.tg-popup-in h2{font:700 1.4rem var(--f-display);margin:0}
+.tg-gruppe{display:grid;gap:8px}
+.tg-gruppe h3{font:700 1.05rem var(--f-display);margin:0;display:flex;align-items:center;gap:8px}
 .tg-verlauf{display:grid;gap:8px;font-size:.88rem;border-top:1px solid var(--line);padding-top:8px}
 .kb-wer{font-size:1.05rem}
 .kb-status{font-size:.92rem;background:var(--field);border:1px dashed var(--line);border-radius:8px;padding:10px 12px}
@@ -617,23 +623,29 @@ button:disabled,input:disabled,select:disabled,textarea:disabled{opacity:.65}
   <!-- Technik (Ergänzung 22.11.2026), nur Geräteverwalter und Geschäftsführung -->
   <section class="view" id="view-technik" hidden>
     <div class="group">
-      <h2>Neues Gerät</h2>
+      <h2>Technik ausgeben</h2>
       <div class="row">
-        <label for="tg-neu-art">Art<select id="tg-neu-art"></select></label>
-        <label for="tg-neu-kz">Kennzeichen / Nr.<input id="tg-neu-kz" autocomplete="off" placeholder="optional"></label>
+        <label for="tg-art"><span class="req">Gerät</span><select id="tg-art"></select></label>
+        <label for="tg-kol"><span class="req">An Kolonne</span><select id="tg-kol"></select></label>
       </div>
-      <label for="tg-neu-name"><span class="req">Bezeichnung</span><input id="tg-neu-name" autocomplete="off" placeholder="z. B. Minibagger Kubota 3"></label>
-      <button class="btn" type="button" id="tg-neu-ok">+ Gerät anlegen</button>
+      <label for="tg-nr">Genaue Bezeichnung / Nr. <span class="hint">optional, z. B. „Bagger 3“ oder Kennzeichen</span><input id="tg-nr" autocomplete="off"></label>
+      <label for="tg-empf">Empfänger <span class="hint">wird mit dem Kolonnenführer vorbelegt</span><input id="tg-empf" autocomplete="off"></label>
+      <div class="msg" id="tg-msg" role="status"></div>
+      <button class="save" type="button" id="tg-ausgeben">Ausgegeben</button>
     </div>
-    <div class="msg" id="tg-msg" role="status"></div>
+    <div class="group"><h2>Wartet auf Bestätigung</h2><div id="tg-wartet" style="display:grid;gap:10px"></div></div>
     <div class="group"><h2>Rückgaben bestätigen</h2><div id="tg-eingang" style="display:grid;gap:10px"></div></div>
-    <div class="group">
-      <h2>Alle Geräte</h2>
-      <label for="tg-filter">Anzeigen<select id="tg-filter"></select></label>
-      <div id="tg-liste" style="display:grid;gap:10px"></div>
-    </div>
-    <p class="note">Ausgeben: Kolonne wählen und „Ausgeben“ tippen. Das Gerät gilt erst als übergeben, wenn der Kolonnenführer „Erhalten“ tippt. Rückgaben bestätigen Sie oben. Nur Testbetrieb: Geräte mit „(Test)“ sind erfunden.</p>
+    <div class="group"><h2>Bei den Kolonnen</h2><div id="tg-liste" style="display:grid;gap:14px"></div></div>
+    <p class="note">Ein Gerät gilt erst als übergeben, wenn der Kolonnenführer „Erhalten“ bestätigt. Alle Übergaben bleiben mit Datum, Uhrzeit und Namen gespeichert und können nicht gelöscht werden.</p>
   </section>
+  <div class="tg-popup" id="tg-popup" hidden role="dialog" aria-modal="true" aria-labelledby="tg-popup-titel">
+    <div class="tg-popup-in">
+      <h2 id="tg-popup-titel">Technik erhalten?</h2>
+      <div id="tg-popup-liste" style="display:grid;gap:12px"></div>
+      <div class="msg" id="tg-popup-msg" role="status"></div>
+      <button class="btn" type="button" id="tg-popup-spaeter">Später</button>
+    </div>
+  </div>
 
   <!-- Kolonnen (Ergänzung 22.11.2026) -->
   <section class="view" id="view-kolonnen" hidden>
@@ -1877,126 +1889,140 @@ Beschädigt von: ${esc(Array.isArray(k.verursacher) ? k.verursacher.join(", ") :
   const $ = id => document.getElementById(id);
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const ARTEN = ["Bagger","Minibagger","Radlader","Dumper","LKW","Transporter","PKW","Tankwagen","Erdrakete","Rüttelplatte","Kanister","Sonstige"];
-  const NUTZ = { benutzt: "benutzt", unbenutzt: "unbenutzt", gelagert: "gelagert" };
-  let sb = null, ich = "", verwalter = false, geraete = [], uebergaben = [], kolonnen = [], fuehrerVon = {}, laeuft = false, offenVerlauf = null;
+  const FARBEN = { Gelb:"#f2c200", Blau:"#1971c2", Rot:"#c92a2a", "Grün":"#2b8a3e", Orange:"#e8590c", Lila:"#7048e8", Braun:"#8d5524", Grau:"#868e96", "Weiß":"#ffffff", Schwarz:"#222222" };
+  const NUTZ = ["benutzt", "unbenutzt", "gelagert"];
+  let sb = null, ich = "", verwalter = false, geraete = [], uebergaben = [], kolonnen = [], fuehrer = [], fuehrerVon = {}, laeuft = false, offenVerlauf = null, spaeter = false;
   const zeit = s => new Date(s).toLocaleString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
   const kName = id => { if(!id) return "Lager / Geräteverwalter"; const k = kolonnen.find(x => x.id === id); return k ? `Kolonne ${k.nummer} / ${k.farbe}` : "Kolonne ?"; };
+  const gName = g => g ? (g.bezeichnung && g.bezeichnung !== g.art ? `${g.art} – ${g.bezeichnung}` : g.art) : "Gerät";
   const offeneVon = g => uebergaben.find(u => u.geraet_id === g && u.status === "offen");
+  const letzteAn = g => uebergaben.find(u => u.geraet_id === g && u.status === "bestaetigt");
   const fehler = e => {
     const m = (e && e.message) || "";
     if(/empfangende Seite/.test(m)) return "Nur die empfangende Seite kann bestätigen.";
-    if(/nicht im Lager/.test(m)) return "Das Gerät ist nicht im Lager.";
+    if(/nicht offen/.test(m)) return "Diese Übergabe ist schon erledigt. Seite neu laden.";
     if(/duplicate|unique/i.test(m)) return "Für dieses Gerät ist schon eine Übergabe offen.";
     if(/Kolonnenführer/.test(m)) return "Das kann nur der Kolonnenführer dieser Kolonne.";
     if(/Berechtigung|permission|row-level/i.test(m)) return "Keine Berechtigung.";
     return "Nicht gespeichert. Bitte Verbindung prüfen und erneut tippen.";
   };
   async function tu(fn, ok, msgId){
-    if(laeuft) return; laeuft = true; const m = $(msgId); m.textContent = "Speichert …"; m.className = "msg";
-    try{ const r = await fn(); if(r && r.error) throw r.error; await laden(); m.textContent = ok; m.className = "msg ok"; }
-    catch(e){ m.textContent = fehler(e); m.className = "msg err"; }
+    if(laeuft) return false; laeuft = true; const m = $(msgId); m.textContent = "Speichert …"; m.className = "msg";
+    try{ const r = await fn(); if(r && r.error) throw r.error; await laden(); m.textContent = ok; m.className = "msg ok"; return true; }
+    catch(e){ m.textContent = fehler(e); m.className = "msg err"; return false; }
     finally{ laeuft = false; }
   }
   async function laden(){
-    const [g, u, k] = await Promise.all([
+    const [g, u, k, m] = await Promise.all([
       sb.from("geraete").select("*").eq("aktiv", true).order("art").order("bezeichnung"),
       sb.from("geraete_uebergaben").select("*").order("gegeben_am", { ascending: false }).limit(500),
-      sb.from("kolonnen").select("id,nummer,farbe").eq("aktiv", true).order("nummer")
+      sb.from("kolonnen").select("id,nummer,farbe").eq("aktiv", true).order("nummer"),
+      sb.from("kolonne_mitglieder").select("kolonne_id,name,position,angelegt_am").eq("aktiv", true)
     ]);
     if(g.error || u.error || k.error) throw (g.error || u.error || k.error);
     geraete = g.data; uebergaben = u.data; kolonnen = k.data;
+    fuehrer = {}; (m.data || []).sort((a, b) => a.position - b.position).forEach(x => { if(!fuehrer[x.kolonne_id]) fuehrer[x.kolonne_id] = x.name; });
     const f = await Promise.all(kolonnen.map(x => sb.rpc("ist_kolonnenfuehrer", { k: x.id })));
     fuehrerVon = {}; kolonnen.forEach((x, i) => fuehrerVon[x.id] = !f[i].error && !!f[i].data);
-    renderVerwalter(); renderKolonne();
+    renderVerwalter(); renderKolonne(); renderPopup();
   }
-  const badge = n => `<span class="tg-n tg-${n}">${esc(NUTZ[n] || n)}</span>`;
+  const badge = n => `<span class="tg-n tg-${n}">${esc(n)}</span>`;
   function verlauf(g){
     const l = uebergaben.filter(u => u.geraet_id === g);
-    return `<div class="tg-verlauf">${l.map(u => `<div><b>${esc(zeit(u.gegeben_am))}</b> ${esc(u.gegeben_von_name)} gibt: ${esc(kName(u.von_kolonne))} → ${esc(kName(u.an_kolonne))}<br>
+    return `<div class="tg-verlauf">${l.map(u => `<div><b>${esc(zeit(u.gegeben_am))}</b> ${esc(u.gegeben_von_name)} gibt: ${esc(kName(u.von_kolonne))} → ${esc(kName(u.an_kolonne))}${u.empfaenger_name ? ` (an ${esc(u.empfaenger_name)})` : ""}<br>
       <span class="ko-sub">${u.status === "offen" ? "wartet auf Bestätigung" : `${u.status === "bestaetigt" ? "bestätigt" : u.status === "abgelehnt" ? "abgelehnt" : "zurückgezogen"} von ${esc(u.erledigt_von_name)}, ${esc(zeit(u.erledigt_am))}`}</span></div>`).join("") || '<span class="ko-sub">Noch keine Übergaben.</span>'}</div>`;
   }
-  function karte(g, knoepfe){
-    const o = offeneVon(g.id);
-    return `<div class="tg-karte">
-      <div class="tg-kopf"><div><div class="ko-name">${esc(g.bezeichnung)}</div><div class="ko-sub">${esc(g.art)}${g.kennzeichen ? " · " + esc(g.kennzeichen) : ""}</div></div>${g.kolonne_id ? badge(g.nutzung) : '<span class="tg-n tg-lager">im Lager</span>'}</div>
-      <div class="ko-sub">Ort: <b>${esc(kName(g.kolonne_id))}</b></div>
-      ${o ? `<div class="tg-offen">⏳ Übergabe an <b>${esc(kName(o.an_kolonne))}</b> wartet auf Bestätigung (gegeben von ${esc(o.gegeben_von_name)}, ${esc(zeit(o.gegeben_am))})</div>` : ""}
-      ${knoepfe(g, o)}
-      <button type="button" class="kb-link" data-tg-verlauf="${g.id}">${offenVerlauf === g.id ? "Verlauf ausblenden" : "Verlauf anzeigen"}</button>
-      ${offenVerlauf === g.id ? verlauf(g.id) : ""}
-    </div>`;
-  }
+  const verlaufKnopf = g => `<button type="button" class="kb-link" data-tg-verlauf="${g.id}">${offenVerlauf === g.id ? "Verlauf ausblenden" : "Verlauf anzeigen"}</button>${offenVerlauf === g.id ? verlauf(g.id) : ""}`;
 
-  // ---------- Reiter Technik (Geräteverwalter und Geschäftsführung) ----------
+  // ---------- Reiter Technik (nur Geräteverwalter / Geschäftsführung) ----------
+  function empfVorbelegen(){ const k = $("tg-kol").value; $("tg-empf").value = fuehrer[k] || ""; }
   function renderVerwalter(){
     if(!verwalter) return;
-    const flt = $("tg-filter").value, alt = flt;
-    $("tg-filter").innerHTML = `<option value="">Alle Geräte</option><option value="lager">Im Lager</option>` + kolonnen.map(k => `<option value="${k.id}">Kolonne ${esc(k.nummer)} / ${esc(k.farbe)}</option>`).join("");
-    $("tg-filter").value = alt;
-    const zuMir = uebergaben.filter(u => u.status === "offen" && !u.an_kolonne);
-    $("tg-eingang").innerHTML = zuMir.length ? zuMir.map(u => { const g = geraete.find(x => x.id === u.geraet_id); return `<div class="tg-offen">
-      <b>${esc(g ? g.bezeichnung : "Gerät")}</b> wird von ${esc(kName(u.von_kolonne))} zurückgegeben (${esc(u.gegeben_von_name)}, ${esc(zeit(u.gegeben_am))})
-      <div class="ko-btns" style="margin-top:8px"><button type="button" data-tg-ok="${u.id}">✔ Erhalten</button><button type="button" class="weg" data-tg-nein="${u.id}">Ablehnen</button></div></div>`; }).join("") : '<p class="kb-hinweis">Keine offenen Rückgaben.</p>';
-    const liste = geraete.filter(g => !flt || (flt === "lager" ? !g.kolonne_id : g.kolonne_id === flt));
-    $("tg-liste").innerHTML = liste.map(g => karte(g, (g, o) => {
-      if(o) return o.gegeben_von === ich ? `<div class="ko-btns"><button type="button" data-tg-zurueckziehen="${o.id}">Übergabe zurückziehen</button></div>` : "";
-      if(!g.kolonne_id) return `<div class="tg-ausgabe"><select data-tg-an="${g.id}" aria-label="Kolonne für ${esc(g.bezeichnung)}"><option value="">Kolonne wählen …</option>${kolonnen.map(k => `<option value="${k.id}">${esc(k.nummer)} / ${esc(k.farbe)}</option>`).join("")}</select><button class="btn" type="button" data-tg-ausgeben="${g.id}">Ausgeben</button></div>`;
-      return "";
-    })).join("") || '<p class="kb-hinweis">Keine Geräte.</p>';
+    const alt = $("tg-kol").value;
+    $("tg-kol").innerHTML = `<option value="">bitte wählen</option>` + kolonnen.map(k => `<option value="${k.id}">${esc(k.nummer)} / ${esc(k.farbe)}</option>`).join("");
+    if(alt && kolonnen.some(k => k.id === alt)) $("tg-kol").value = alt;
+    const raus = uebergaben.filter(u => u.status === "offen" && u.an_kolonne);
+    $("tg-wartet").innerHTML = raus.length ? raus.map(u => { const g = geraete.find(x => x.id === u.geraet_id); return `<div class="tg-offen">
+      ⏳ <b>${esc(gName(g))}</b> an ${esc(kName(u.an_kolonne))}${u.empfaenger_name ? ` (${esc(u.empfaenger_name)})` : ""}<br><span class="ko-sub">ausgegeben ${esc(zeit(u.gegeben_am))} von ${esc(u.gegeben_von_name)}</span>
+      ${u.gegeben_von === ich ? `<div class="ko-btns" style="margin-top:8px"><button type="button" data-tg-zurueckziehen="${u.id}">Zurückziehen</button></div>` : ""}</div>`; }).join("") : '<p class="kb-hinweis">Nichts offen.</p>';
+    const rein = uebergaben.filter(u => u.status === "offen" && !u.an_kolonne);
+    $("tg-eingang").innerHTML = rein.length ? rein.map(u => { const g = geraete.find(x => x.id === u.geraet_id); return `<div class="tg-offen">
+      <b>${esc(gName(g))}</b> wird von ${esc(kName(u.von_kolonne))} zurückgegeben (${esc(u.gegeben_von_name)}, ${esc(zeit(u.gegeben_am))})
+      <div class="ko-btns" style="margin-top:8px"><button type="button" data-tg-ok="${u.id}">✔ Erhalten</button><button type="button" class="weg" data-tg-nein="${u.id}">Nicht erhalten</button></div></div>`; }).join("") : '<p class="kb-hinweis">Keine offenen Rückgaben.</p>';
+    $("tg-liste").innerHTML = kolonnen.map(k => {
+      const l = geraete.filter(g => g.kolonne_id === k.id);
+      return `<div class="tg-gruppe"><h3><span class="ko-farbe" style="background:${FARBEN[k.farbe] || "#ccc"};width:20px;height:20px"></span>Kolonne ${esc(k.nummer)} / ${esc(k.farbe)} <span class="ko-sub" style="margin-left:auto">${l.length} Geräte</span></h3>
+        ${l.map(g => { const u = letzteAn(g.id); return `<div class="tg-karte"><div class="tg-kopf"><div class="ko-name">${esc(gName(g))}</div>${badge(g.nutzung)}</div>
+          <div class="ko-sub">bestätigt${u ? ` von ${esc(u.erledigt_von_name)}, ${esc(zeit(u.erledigt_am))}` : ""}${u && u.empfaenger_name ? ` · Empfänger: ${esc(u.empfaenger_name)}` : ""}</div>
+          ${offeneVon(g.id) ? '<div class="tg-offen">⏳ Rückgabe angemeldet, oben bestätigen</div>' : ""}${verlaufKnopf(g)}</div>`; }).join("") || '<p class="kb-hinweis">Keine Geräte.</p>'}</div>`;
+    }).join("") || '<p class="kb-hinweis">Noch keine Kolonnen angelegt.</p>';
   }
+  $("tg-art").innerHTML = ARTEN.map(a => `<option>${a}</option>`).join("");
+  $("tg-kol").addEventListener("change", empfVorbelegen);
+  $("tg-ausgeben").addEventListener("click", async () => {
+    const k = $("tg-kol").value, art = $("tg-art").value;
+    if(!k){ $("tg-msg").textContent = "Bitte die Kolonne wählen."; $("tg-msg").className = "msg err"; return; }
+    const ok = await tu(() => sb.rpc("geraet_ausgeben_neu", { p_art: art, p_bezeichnung: $("tg-nr").value.trim(), k, p_empfaenger: $("tg-empf").value.trim() }),
+      `${art} an ${kName(k)} ausgegeben. Wartet auf Bestätigung durch den Kolonnenführer.`, "tg-msg");
+    if(ok){ $("tg-nr").value = ""; }
+  });
 
-  // ---------- Unterreiter Technik in "Kolonne" (Kolonnenführer, Bauleiter) ----------
+  // ---------- Unterreiter Technik in "Kolonne" ----------
   function renderKolonne(){
     const sel = $("kt-kolonne"), alt = sel.value;
     sel.innerHTML = kolonnen.map(k => `<option value="${k.id}">${esc(k.nummer)} / ${esc(k.farbe)}</option>`).join("");
     if(alt && kolonnen.some(k => k.id === alt)) sel.value = alt;
     else { const eigene = kolonnen.find(k => fuehrerVon[k.id]); if(eigene) sel.value = eigene.id; }
-    const k = sel.value, fuehrer = !!fuehrerVon[k];
+    const k = sel.value, istF = !!fuehrerVon[k];
     $("kt-leer").hidden = kolonnen.length > 0;
-    $("kt-rolle").textContent = !k ? "" : fuehrer ? "Sie sind Kolonnenführer dieser Kolonne: Sie bestätigen den Empfang und geben zurück." : "Nur ansehen: Bestätigen und Zurückgeben kann nur der Kolonnenführer.";
+    $("kt-rolle").textContent = !k ? "" : istF ? "Sie sind Kolonnenführer dieser Kolonne." : "Nur ansehen: Bestätigen und Zurückgeben kann nur der Kolonnenführer.";
     const rein = uebergaben.filter(u => u.status === "offen" && u.an_kolonne === k);
     $("kt-eingang").innerHTML = rein.length ? rein.map(u => { const g = geraete.find(x => x.id === u.geraet_id); return `<div class="tg-offen">
-      <b>${esc(g ? g.bezeichnung : "Gerät")}</b>${g ? ` (${esc(g.art)})` : ""} wird Ihrer Kolonne übergeben von ${esc(u.gegeben_von_name)}, ${esc(zeit(u.gegeben_am))}
-      ${fuehrer ? `<div class="ko-btns" style="margin-top:8px"><button type="button" data-kt-ok="${u.id}">✔ Erhalten</button><button type="button" class="weg" data-kt-nein="${u.id}">Ablehnen</button></div>` : ""}</div>`; }).join("") : '<p class="kb-hinweis">Nichts zu bestätigen.</p>';
+      <b>${esc(gName(g))}</b> von ${esc(u.gegeben_von_name)}, ${esc(zeit(u.gegeben_am))}
+      ${istF ? `<div class="ko-btns" style="margin-top:8px"><button type="button" data-kt-ok="${u.id}">✔ Erhalten</button><button type="button" class="weg" data-kt-nein="${u.id}">Nicht erhalten</button></div>` : ""}</div>`; }).join("") : '<p class="kb-hinweis">Nichts zu bestätigen.</p>';
     const meine = geraete.filter(g => g.kolonne_id === k);
-    $("kt-liste").innerHTML = meine.map(g => karte(g, (g, o) => {
-      if(!fuehrer) return "";
-      if(o) return o.gegeben_von === ich ? `<div class="ko-btns"><button type="button" data-kt-zurueckziehen="${o.id}">Rückgabe zurückziehen</button></div>` : "";
-      return `<div class="tg-nutz" role="group" aria-label="Nutzung">${Object.keys(NUTZ).map(n => `<button type="button" data-kt-nutz="${g.id}|${n}" aria-pressed="${g.nutzung === n}" class="tg-${n}">${NUTZ[n]}</button>`).join("")}</div>
-        <button class="btn" type="button" data-kt-zurueck="${g.id}">An Geräteverwalter zurückgeben</button>`;
-    })).join("") || '<p class="kb-hinweis">Diese Kolonne hat zurzeit keine Geräte.</p>';
+    $("kt-liste").innerHTML = meine.map(g => { const o = offeneVon(g.id), u = letzteAn(g.id); return `<div class="tg-karte">
+      <div class="tg-kopf"><div><div class="ko-name">${esc(gName(g))}</div><div class="ko-sub">${u ? `erhalten ${esc(zeit(u.erledigt_am))}` : ""}</div></div>${badge(g.nutzung)}</div>
+      ${o ? `<div class="tg-offen">⏳ Rückgabe wartet auf Bestätigung durch den Geräteverwalter</div>${istF && o.gegeben_von === ich ? `<div class="ko-btns"><button type="button" data-kt-zurueckziehen="${o.id}">Rückgabe zurückziehen</button></div>` : ""}`
+        : istF ? `<div class="tg-nutz" role="group" aria-label="Nutzung">${NUTZ.map(n => `<button type="button" data-kt-nutz="${g.id}|${n}" aria-pressed="${g.nutzung === n}" class="tg-${n}">${n}</button>`).join("")}</div>
+        <button class="btn" type="button" data-kt-zurueck="${g.id}">An Geräteverwalter zurückgeben</button>` : ""}
+      ${verlaufKnopf(g)}</div>`; }).join("") || '<p class="kb-hinweis">Diese Kolonne hat zurzeit keine Geräte.</p>';
   }
+
+  // ---------- Hinweisfenster beim Öffnen: "Technik erhalten? Bestätigen" ----------
+  function renderPopup(){
+    const offen = uebergaben.filter(u => u.status === "offen" && u.an_kolonne && fuehrerVon[u.an_kolonne]);
+    if(!offen.length || spaeter){ $("tg-popup").hidden = true; return; }
+    $("tg-popup-liste").innerHTML = offen.map(u => { const g = geraete.find(x => x.id === u.geraet_id); return `<div class="tg-offen">
+      <div class="ko-name">${esc(gName(g))}</div>
+      <div class="ko-sub">für ${esc(kName(u.an_kolonne))} · ausgegeben von ${esc(u.gegeben_von_name)}, ${esc(zeit(u.gegeben_am))}</div>
+      <div class="ko-btns" style="margin-top:8px"><button type="button" data-kt-ok="${u.id}" data-popup="1">✔ Erhalten</button><button type="button" class="weg" data-kt-nein="${u.id}" data-popup="1">Nicht erhalten</button></div></div>`; }).join("");
+    $("tg-popup").hidden = false;
+  }
+  $("tg-popup-spaeter").addEventListener("click", () => { spaeter = true; $("tg-popup").hidden = true; });
 
   document.addEventListener("click", ev => {
     const t = ev.target.closest("button"); if(!t) return; const d = t.dataset;
+    const mk = d.popup ? "tg-popup-msg" : "kt-msg";
     if(d.tgVerlauf){ offenVerlauf = offenVerlauf === d.tgVerlauf ? null : d.tgVerlauf; renderVerwalter(); renderKolonne(); }
-    else if(d.tgAusgeben){ const k = document.querySelector(`[data-tg-an="${d.tgAusgeben}"]`).value; if(!k){ $("tg-msg").textContent = "Bitte zuerst die Kolonne wählen."; $("tg-msg").className = "msg err"; return; }
-      tu(() => sb.rpc("geraet_ausgeben", { g: d.tgAusgeben, k }), `Übergabe an ${kName(k)} angelegt. Der Kolonnenführer muss den Empfang bestätigen.`, "tg-msg"); }
-    else if(d.tgOk) tu(() => sb.rpc("uebergabe_erledigen", { u: d.tgOk, aktion: "bestaetigt" }), "Rückgabe bestätigt. Gerät ist wieder im Lager.", "tg-msg");
-    else if(d.tgNein) tu(() => sb.rpc("uebergabe_erledigen", { u: d.tgNein, aktion: "abgelehnt" }), "Rückgabe abgelehnt. Gerät bleibt bei der Kolonne.", "tg-msg");
-    else if(d.tgZurueckziehen) tu(() => sb.rpc("uebergabe_erledigen", { u: d.tgZurueckziehen, aktion: "zurueckgezogen" }), "Übergabe zurückgezogen.", "tg-msg");
-    else if(d.ktOk) tu(() => sb.rpc("uebergabe_erledigen", { u: d.ktOk, aktion: "bestaetigt" }), "Empfang bestätigt. Das Gerät ist jetzt bei Ihrer Kolonne.", "kt-msg");
-    else if(d.ktNein) tu(() => sb.rpc("uebergabe_erledigen", { u: d.ktNein, aktion: "abgelehnt" }), "Abgelehnt. Das Gerät bleibt im Lager.", "kt-msg");
+    else if(d.tgOk) tu(() => sb.rpc("uebergabe_erledigen", { u: d.tgOk, aktion: "bestaetigt" }), "Rückgabe bestätigt.", "tg-msg");
+    else if(d.tgNein) tu(() => sb.rpc("uebergabe_erledigen", { u: d.tgNein, aktion: "abgelehnt" }), "Abgelehnt. Gerät bleibt bei der Kolonne.", "tg-msg");
+    else if(d.tgZurueckziehen) tu(() => sb.rpc("uebergabe_erledigen", { u: d.tgZurueckziehen, aktion: "zurueckgezogen" }), "Ausgabe zurückgezogen.", "tg-msg");
+    else if(d.ktOk) tu(() => sb.rpc("uebergabe_erledigen", { u: d.ktOk, aktion: "bestaetigt" }), "Empfang bestätigt.", mk);
+    else if(d.ktNein) tu(() => sb.rpc("uebergabe_erledigen", { u: d.ktNein, aktion: "abgelehnt" }), "Als „nicht erhalten“ gemeldet.", mk);
     else if(d.ktZurueckziehen) tu(() => sb.rpc("uebergabe_erledigen", { u: d.ktZurueckziehen, aktion: "zurueckgezogen" }), "Rückgabe zurückgezogen.", "kt-msg");
-    else if(d.ktZurueck) tu(() => sb.rpc("geraet_zurueckgeben", { g: d.ktZurueck }), "Rückgabe angelegt. Der Geräteverwalter muss den Empfang bestätigen.", "kt-msg");
-    else if(d.ktNutz){ const [g, n] = d.ktNutz.split("|"); tu(() => sb.rpc("geraet_nutzung", { g, n }), `Als „${NUTZ[n]}“ markiert.`, "kt-msg"); }
+    else if(d.ktZurueck) tu(() => sb.rpc("geraet_zurueckgeben", { g: d.ktZurueck }), "Rückgabe angemeldet. Der Geräteverwalter muss bestätigen.", "kt-msg");
+    else if(d.ktNutz){ const [g, n] = d.ktNutz.split("|"); tu(() => sb.rpc("geraet_nutzung", { g, n }), `Als „${n}“ markiert.`, "kt-msg"); }
   });
-  $("tg-filter").addEventListener("change", renderVerwalter);
   $("kt-kolonne").addEventListener("change", renderKolonne);
-  $("tg-neu-art").innerHTML = ARTEN.map(a => `<option>${a}</option>`).join("");
-  $("tg-neu-ok").addEventListener("click", () => {
-    const bezeichnung = $("tg-neu-name").value.trim(), art = $("tg-neu-art").value, kennzeichen = $("tg-neu-kz").value.trim();
-    if(!bezeichnung){ $("tg-msg").textContent = "Bitte eine Bezeichnung eintragen."; $("tg-msg").className = "msg err"; return; }
-    tu(() => sb.from("geraete").insert({ art, bezeichnung, kennzeichen }), `${bezeichnung} angelegt (im Lager).`, "tg-msg").then(() => { if($("tg-msg").className.includes("ok")){ $("tg-neu-name").value = ""; $("tg-neu-kz").value = ""; } });
-  });
 
   if(window.tbBereit) window.tbBereit.then(async x => {
     sb = x.sb; ich = x.email.toLowerCase();
     const r = await sb.rpc("ist_geraeteverwalter"); verwalter = !r.error && !!r.data;
     $("tab-technik").hidden = !verwalter;
     if(!verwalter && !$("view-technik").hidden) $("tab-form").click();
-    try{ await laden(); }catch(e){}
-    document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible") laden().catch(() => {}); });
+    try{ await laden(); empfVorbelegen(); }catch(e){}
+    document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible"){ spaeter = false; laden().catch(() => {}); } });
     window.tbTechnikLaden = () => laden().catch(() => {});
   });
 })();
