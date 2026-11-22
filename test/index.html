@@ -184,6 +184,32 @@ textarea{min-height:96px;resize:vertical}
 .ko-checks{display:flex;gap:16px;flex-wrap:wrap}
 .ko-checks label{display:flex;align-items:center;gap:8px;font-weight:500}
 .ko-checks input{width:22px;height:22px;min-height:0}
+.tabs.zwei{grid-template-columns:1fr 1fr}
+.kb-wer{font-size:1.05rem}
+.kb-status{font-size:.92rem;background:var(--field);border:1px dashed var(--line);border-radius:8px;padding:10px 12px}
+.kb-status:empty{display:none}
+.kb-tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:var(--danger);color:#fff;border-radius:4px;padding:1px 6px}
+.kb-ue{font-weight:600;margin-bottom:6px}
+.kb-hinweis{color:var(--muted);font-size:.9rem;margin:0}
+.kb-zeile{display:grid;grid-template-columns:1fr auto 1fr auto;gap:8px;align-items:center}
+.kb-zeile .kb-art{grid-column:1 / -1}
+.kb-x{width:44px;height:48px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--danger);font-size:1.3rem;cursor:pointer}
+.kb-ma{display:grid;grid-template-columns:1fr auto;gap:8px 10px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--field)}
+.kb-ma.weg{border-color:var(--danger)}
+.kb-voll{grid-column:1 / -1}
+.kb-voll .kb-zeile{grid-template-columns:1fr auto 1fr}
+.kb-voll .kb-zeile > span:first-child{grid-column:1 / -1;font-size:.85rem;color:var(--muted)}
+.kb-zeile input{min-width:0}
+.kb-da{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.kb-da button{font:600 .9rem var(--f-body);border:0;background:var(--card);color:var(--ink);padding:0 12px;min-height:44px;cursor:pointer}
+.kb-da button[aria-pressed="true"]{background:var(--ok);color:#fff}
+.kb-da button[data-nda][aria-pressed="true"]{background:var(--danger)}
+.kb-link{font:500 .88rem var(--f-body);background:none;border:0;color:var(--muted);text-decoration:underline;padding:4px 0;cursor:pointer;min-height:36px}
+.kb-zahl{font-family:var(--f-mono);text-transform:none;letter-spacing:0;margin-left:6px}
+.kb-karte{display:grid;gap:2px;text-align:left;font:inherit;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer}
+.kb-nt{border-left:3px solid var(--accent);padding:4px 0 4px 10px}
+#ko-verw[hidden],#kb-bereich[hidden]{display:none!important}
+button:disabled,input:disabled,select:disabled,textarea:disabled{opacity:.65}
 .uitem{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:4px}
 .uitem .uhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
 .uitem strong{font-family:var(--f-display);font-size:1.15rem;letter-spacing:.01em;min-width:0;overflow-wrap:anywhere}
@@ -373,7 +399,7 @@ textarea{min-height:96px;resize:vertical}
       <button id="tab-list" role="tab" aria-selected="false">Berichte <span class="count" id="count"></span></button>
       <button id="tab-plan" role="tab" aria-selected="false">Pläne</button>
       <button id="tab-urlaub" role="tab" aria-selected="false">Urlaub</button>
-      <button id="tab-kolonnen" role="tab" aria-selected="false">Kolonnen</button>
+      <button id="tab-kolonnen" role="tab" aria-selected="false">Kolonne</button>
     </div>
   </header>
 
@@ -569,6 +595,62 @@ textarea{min-height:96px;resize:vertical}
 
   <!-- Kolonnen (Ergänzung 22.11.2026) -->
   <section class="view" id="view-kolonnen" hidden>
+    <div class="tabs zwei" id="ko-unter" role="tablist">
+      <button type="button" role="tab" data-unter="bericht" aria-selected="true">Kolonnenbericht</button>
+      <button type="button" role="tab" data-unter="verwaltung" aria-selected="false">Kolonnen &amp; Leute</button>
+    </div>
+    <div id="kb-bereich" style="display:grid;gap:14px">
+      <div class="group">
+        <h2>Kolonnenbericht</h2>
+        <div class="kb-wer">Es schreibt: <b id="kb-wer">…</b></div>
+        <p class="kb-hinweis" id="kb-leer" hidden>Sie sind keiner Kolonne zugeordnet. Bitte bei der Geschäftsführung melden.</p>
+        <div class="row">
+          <label for="kb-kolonne">Kolonne<select id="kb-kolonne"></select></label>
+          <label for="kb-datum">Datum<input type="date" id="kb-datum"></label>
+        </div>
+        <div class="kb-status" id="kb-status"></div>
+      </div>
+      <div id="kb-inhalt" style="display:grid;gap:14px">
+        <div id="kb-formular" style="display:grid;gap:14px">
+          <div class="group">
+            <h2>Arbeitszeit der Kolonne</h2>
+            <div class="row">
+              <label for="kb-beginn"><span class="req">Gekommen</span><input type="time" id="kb-beginn"></label>
+              <label for="kb-ende"><span class="req">Beendet</span><input type="time" id="kb-ende"></label>
+            </div>
+            <div><div class="kb-ue">Pausen</div><div id="kb-pausen" style="display:grid;gap:8px"></div></div>
+            <button class="btn" type="button" id="kb-pause-neu">+ Pause</button>
+            <div><div class="kb-ue">Wetterbehinderung</div><div id="kb-wetter" style="display:grid;gap:8px"></div></div>
+            <button class="btn" type="button" id="kb-wetter-neu">+ Wetterbehinderung</button>
+            <div class="calc" id="kb-summe"></div>
+          </div>
+          <div class="group">
+            <h2>Wer war da? <span class="kb-zahl" id="kb-anw-zahl"></span></h2>
+            <div id="kb-anw" style="display:grid;gap:10px"></div>
+          </div>
+          <div class="group">
+            <h2>Notizen</h2>
+            <label for="kb-notizen">Bemerkungen zum Tag<textarea id="kb-notizen"></textarea></label>
+          </div>
+        </div>
+        <div class="msg" id="kb-msg" role="status"></div>
+        <button class="save" id="kb-speichern" type="button">Kolonnenbericht speichern</button>
+        <div class="group" id="kb-nachtrag-box" hidden>
+          <h2>Nachträge</h2>
+          <div id="kb-nachtraege" style="display:grid;gap:10px"></div>
+          <div id="kb-nt-neu" style="display:grid;gap:10px">
+            <label for="kb-nt-text">Nachtrag hinzufügen <span class="hint">wird mit Datum und Namen gespeichert und kann nicht geändert werden</span><textarea id="kb-nt-text"></textarea></label>
+            <button class="btn" type="button" id="kb-nt-ok">Nachtrag speichern</button>
+          </div>
+          <p class="kb-hinweis" id="kb-nt-zu" hidden>Nachträge sind nur bis einen Monat nach dem Berichtstag möglich.</p>
+        </div>
+        <div class="group">
+          <h2>Letzte Kolonnenberichte</h2>
+          <div id="kb-liste" style="display:grid;gap:8px"></div>
+        </div>
+      </div>
+    </div>
+    <div id="ko-verw" hidden style="display:grid;gap:14px">
     <div class="msg" id="ko-msg" role="status"></div>
     <div class="group" id="ko-anlegen" hidden>
       <h2>Neue Kolonne anlegen</h2>
@@ -585,6 +667,7 @@ textarea{min-height:96px;resize:vertical}
       <div id="ko-konten-liste"></div>
     </div>
     <p class="note">Wer in der Liste ganz oben steht, ist Kolonnenführer und schreibt den Kolonnenbericht. Nach oben kann nur, wer einen Login hat. Mitarbeiter werden nicht gelöscht, sondern nur aus der Kolonne genommen. Nur Testbetrieb: bitte keine echten Namen.</p>
+    </div>
     <datalist id="ko-funktionen"><option>Vorarbeiter</option><option>Tiefbauer</option><option>Baggerfahrer</option><option>LKW-Fahrer</option><option>Pflasterer</option><option>Helfer</option><option>Monteur</option></datalist>
   </section>
 </div>
@@ -1494,6 +1577,214 @@ Beschädigt von: ${esc(Array.isArray(k.verursacher) ? k.verursacher.join(", ") :
     document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible") laden().catch(() => {}); });
   });
   else msg("Kolonnen gibt es nur in der Online-Version.", "err");
+})();
+</script>
+
+<script>
+/* Ergänzung 22.11.2026 Schritt 2: Kolonnenbericht (Tabellen kolonnen_berichte, kolonnen_gruende, kolonnen_nachtraege) */
+(function(){
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const GRUENDE = ["Urlaub", "krank", "unentschuldigt", "sonstiges"];
+  const WETTER = ["Regen", "Starkregen", "Frost", "Schnee", "Sturm", "Hitze", "Gewitter"];
+  let sb = null, ich = "", kolonnen = [], mitglieder = [], berichte = [], aktuell = null, gruende = {}, nachtraege = [], laeuft = false;
+  let pausen = [], wetter = [], anw = [];
+
+  const msg = (t, cls) => { const m = $("kb-msg"); m.textContent = t || ""; m.className = "msg " + (cls || ""); };
+  function heute(){ const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); }
+  const fmtD = s => { const d = new Date(s + "T12:00:00"); return isNaN(d) ? s : d.toLocaleDateString("de-DE", { weekday: "short", day: "2-digit", month: "2-digit", year: "numeric" }); };
+  const min = t => { if(!t) return null; const [h, m] = t.slice(0, 5).split(":").map(Number); return h * 60 + m; };
+  const dauer = (v, b) => { const a = min(v), e = min(b); return a == null || e == null || e <= a ? 0 : e - a; };
+  const hm = m => `${Math.floor(m / 60)}:${String(m % 60).padStart(2, "0")} Std.`;
+  const t5 = t => (t || "").slice(0, 5);
+  // Bericht vom Tag X: änderbar bis X+1 18:00 (deutsche Zeit) – die Datenbank prüft das ebenfalls
+  function frist(datum){ const d = new Date(datum + "T12:00:00"); d.setDate(d.getDate() + 1); return d.toISOString().slice(0, 10); }
+  function berlinJetzt(){ const p = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Berlin", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date()); return p.replace(" ", "T"); }
+  const offen = datum => berlinJetzt() < frist(datum) + "T18:00";
+  const kName = id => { const k = kolonnen.find(x => x.id === id); return k ? `${k.nummer} / ${k.farbe}` : "?"; };
+  const aktiveMa = k => mitglieder.filter(m => m.kolonne_id === k && m.aktiv).sort((a, b) => a.position - b.position);
+
+  async function grunddaten(){
+    const [k, m, b] = await Promise.all([
+      sb.from("kolonnen").select("id,nummer,farbe").eq("aktiv", true).order("nummer"),
+      sb.from("kolonne_mitglieder").select("id,kolonne_id,name,funktion,position,aktiv").eq("aktiv", true),
+      sb.from("kolonnen_berichte").select("*").gte("datum", new Date(Date.now() - 45 * 864e5).toISOString().slice(0, 10)).order("datum", { ascending: false })
+    ]);
+    if(k.error || m.error || b.error) throw (k.error || m.error || b.error);
+    kolonnen = k.data; mitglieder = m.data; berichte = b.data;
+    const sel = $("kb-kolonne"), alt = sel.value;
+    sel.innerHTML = kolonnen.map(x => `<option value="${x.id}">${esc(x.nummer)} / ${esc(x.farbe)}</option>`).join("");
+    if(alt && kolonnen.some(x => x.id === alt)) sel.value = alt;
+    $("kb-leer").hidden = kolonnen.length > 0; $("kb-inhalt").hidden = !kolonnen.length;
+    renderListe();
+  }
+
+  async function oeffnen(){
+    const k = $("kb-kolonne").value, d = $("kb-datum").value; if(!k || !d) return;
+    msg("");
+    const r = await sb.from("kolonnen_berichte").select("*").eq("kolonne_id", k).eq("datum", d).maybeSingle();
+    aktuell = r.data || null; gruende = {}; nachtraege = [];
+    if(aktuell){
+      const [g, n] = await Promise.all([
+        sb.from("kolonnen_gruende").select("mitglied_id,grund").eq("bericht_id", aktuell.id),
+        sb.from("kolonnen_nachtraege").select("*").eq("bericht_id", aktuell.id).order("erstellt_am")
+      ]);
+      (g.data || []).forEach(x => gruende[x.mitglied_id] = x.grund); nachtraege = n.data || [];
+      pausen = (aktuell.pausen || []).map(x => ({ ...x })); wetter = (aktuell.wetter || []).map(x => ({ ...x }));
+      $("kb-beginn").value = t5(aktuell.beginn); $("kb-ende").value = t5(aktuell.ende); $("kb-notizen").value = aktuell.notizen || "";
+      const bekannte = aktuell.anwesenheit || [];
+      anw = bekannte.map(a => ({ ...a, grund: gruende[a.mitglied_id] || "" }));
+      aktiveMa(k).forEach(m => { if(!anw.some(a => a.mitglied_id === m.id)) anw.push({ mitglied_id: m.id, name: m.name, funktion: m.funktion, anwesend: true }); });
+    } else {
+      pausen = [{ von: "12:00", bis: "12:30" }]; wetter = [];
+      $("kb-beginn").value = "07:00"; $("kb-ende").value = "16:00"; $("kb-notizen").value = "";
+      anw = aktiveMa(k).map(m => ({ mitglied_id: m.id, name: m.name, funktion: m.funktion, anwesend: true, grund: "" }));
+    }
+    renderForm();
+  }
+
+  function darfAendern(){ return !aktuell || (aktuell.geschrieben_von === ich && !aktuell.nachgetragen && offen(aktuell.datum)); }
+
+  function renderForm(){
+    const d = $("kb-datum").value, edit = darfAendern();
+    let status;
+    if(!aktuell) status = offen(d) ? "Neuer Bericht." : "Neuer Bericht – wird als <b>nachgetragen</b> markiert und kann danach nicht mehr geändert werden.";
+    else if(edit) status = `Bericht von <b>${esc(aktuell.geschrieben_von_name)}</b>. Änderbar bis ${esc(fmtD(frist(aktuell.datum)))}, 18:00 Uhr.`;
+    else status = `Bericht von <b>${esc(aktuell.geschrieben_von_name)}</b>${aktuell.nachgetragen ? ' <span class="kb-tag">nachgetragen</span>' : ""}. Kann nicht mehr geändert werden${aktuell.geschrieben_von !== ich ? " (fremder Eintrag)" : ""}. Ergänzungen unten als Nachtrag.`;
+    $("kb-status").innerHTML = status;
+    $("kb-formular").querySelectorAll("input,select,textarea,button").forEach(el => el.disabled = !edit);
+    $("kb-speichern").hidden = !edit;
+    // Pausen
+    $("kb-pausen").innerHTML = pausen.map((p, i) => `<div class="kb-zeile"><input type="time" data-p="${i}" data-f="von" value="${esc(p.von)}" aria-label="Pause von"><span>bis</span><input type="time" data-p="${i}" data-f="bis" value="${esc(p.bis)}" aria-label="Pause bis"><button type="button" class="kb-x" data-px="${i}" aria-label="Pause entfernen">×</button></div>`).join("") || '<p class="kb-hinweis">Keine Pause eingetragen.</p>';
+    $("kb-wetter").innerHTML = wetter.map((w, i) => `<div class="kb-zeile"><input type="time" data-w="${i}" data-f="von" value="${esc(w.von)}" aria-label="Wetter von"><span>bis</span><input type="time" data-w="${i}" data-f="bis" value="${esc(w.bis)}" aria-label="Wetter bis"><button type="button" class="kb-x" data-wx="${i}" aria-label="Eintrag entfernen">×</button>
+      <select data-w="${i}" data-f="art" class="kb-art">${WETTER.map(a => `<option${a === w.art ? " selected" : ""}>${a}</option>`).join("")}</select></div>`).join("") || '<p class="kb-hinweis">Keine Wetterbehinderung.</p>';
+    $("kb-anw").innerHTML = anw.map((a, i) => `<div class="kb-ma${a.anwesend ? "" : " weg"}">
+      <div><div class="ko-name">${esc(a.name)}</div><div class="ko-sub">${esc(a.funktion || "")}</div></div>
+      <div class="kb-da"><button type="button" data-da="${i}" aria-pressed="${a.anwesend}">da</button><button type="button" data-nda="${i}" aria-pressed="${!a.anwesend}">nicht da</button></div>
+      ${a.anwesend ? `<div class="kb-voll">${a.beginn || a.ende ? `<div class="kb-zeile"><span>eigene Zeit</span><input type="time" data-a="${i}" data-f="beginn" value="${esc(a.beginn || "")}" aria-label="Beginn ${esc(a.name)}"><span>bis</span><input type="time" data-a="${i}" data-f="ende" value="${esc(a.ende || "")}" aria-label="Ende ${esc(a.name)}"></div>` : `<button type="button" class="kb-link" data-zeit="${i}">andere Arbeitszeit als die Kolonne?</button>`}</div>`
+        : `<label class="kb-voll">Grund <span class="hint">sieht nur die Geschäftsführung</span><select data-grund="${i}"><option value="">bitte wählen</option>${GRUENDE.map(g => `<option${g === a.grund ? " selected" : ""}>${g}</option>`).join("")}</select></label>`}
+    </div>`).join("") || '<p class="kb-hinweis">Diese Kolonne hat noch keine Mitarbeiter.</p>';
+    if(!edit) $("kb-formular").querySelectorAll("input,select,textarea,button").forEach(el => el.disabled = true);
+    rechnen();
+    // Nachträge
+    $("kb-nachtrag-box").hidden = !aktuell;
+    $("kb-nachtraege").innerHTML = nachtraege.map(n => `<div class="kb-nt"><div class="ko-sub">${esc(new Date(n.erstellt_am).toLocaleString("de-DE"))} · ${esc(n.geschrieben_von_name)}</div><div>${esc(n.text).replace(/\n/g, "<br>")}</div></div>`).join("") || '<p class="kb-hinweis">Noch keine Nachträge.</p>';
+    const ntOk = aktuell && aktuell.datum >= new Date(Date.now() - 31 * 864e5).toISOString().slice(0, 10);
+    $("kb-nt-neu").hidden = !ntOk; $("kb-nt-zu").hidden = !!ntOk || !aktuell;
+  }
+
+  function rechnen(){
+    const b = $("kb-beginn").value, e = $("kb-ende").value;
+    const p = pausen.reduce((s, x) => s + dauer(x.von, x.bis), 0), w = wetter.reduce((s, x) => s + dauer(x.von, x.bis), 0);
+    const gesamt = dauer(b, e);
+    $("kb-summe").innerHTML = `Anwesend: <b>${hm(gesamt)}</b> · Pause: <b>${hm(p)}</b> · Arbeitszeit ohne Pause: <b>${hm(Math.max(0, gesamt - p))}</b>${w ? ` · davon Wetterbehinderung: <b>${hm(w)}</b>` : ""}`;
+    const da = anw.filter(a => a.anwesend).length;
+    $("kb-anw-zahl").textContent = `${da} von ${anw.length} da`;
+  }
+
+  function pruefen(){
+    const b = $("kb-beginn").value, e = $("kb-ende").value;
+    if(!b || !e) return "Bitte Beginn und Ende eintragen.";
+    if(min(e) <= min(b)) return "Das Ende muss nach dem Beginn liegen.";
+    for(const p of pausen){ if(!p.von || !p.bis || min(p.bis) <= min(p.von)) return "Bitte bei jeder Pause Beginn und Ende richtig eintragen."; if(min(p.von) < min(b) || min(p.bis) > min(e)) return "Die Pause muss innerhalb der Arbeitszeit liegen."; }
+    for(const w of wetter){ if(!w.von || !w.bis || min(w.bis) <= min(w.von)) return "Bitte bei der Wetterbehinderung Beginn und Ende richtig eintragen."; }
+    for(const a of anw){
+      if(!a.anwesend && !a.grund) return `Bitte für ${a.name} einen Grund wählen.`;
+      if(a.anwesend && (a.beginn || a.ende) && (!a.beginn || !a.ende || min(a.ende) <= min(a.beginn))) return `Bitte bei ${a.name} die eigene Zeit vollständig eintragen.`;
+    }
+    if(!$("kb-datum").value || $("kb-datum").value > heute()) return "Das Datum darf nicht in der Zukunft liegen.";
+    return null;
+  }
+
+  async function speichern(){
+    if(laeuft) return; const f = pruefen(); if(f) return msg(f, "err");
+    if(!aktuell && !offen($("kb-datum").value) && $("kb-speichern").dataset.ok !== "1"){
+      $("kb-speichern").dataset.ok = "1"; $("kb-speichern").textContent = "Nachtragen bestätigen";
+      return msg("Dieser Tag liegt mehr als einen Tag zurück. Der Bericht wird als „nachgetragen“ markiert und kann danach nicht mehr geändert werden. Zum Bestätigen noch einmal tippen.", "err");
+    }
+    laeuft = true; $("kb-speichern").disabled = true; msg("Speichert …");
+    const daten = {
+      beginn: $("kb-beginn").value, ende: $("kb-ende").value, pausen, wetter, notizen: $("kb-notizen").value.trim(),
+      anwesenheit: anw.map(a => { const o = { mitglied_id: a.mitglied_id, name: a.name, funktion: a.funktion || "", anwesend: !!a.anwesend }; if(a.anwesend && a.beginn && a.ende){ o.beginn = a.beginn; o.ende = a.ende; } return o; })
+    };
+    try{
+      let id;
+      if(aktuell){ const r = await sb.from("kolonnen_berichte").update(daten).eq("id", aktuell.id).select("id"); if(r.error) throw r.error; if(!r.data.length) throw { code: "frist" }; id = aktuell.id; }
+      else { const r = await sb.from("kolonnen_berichte").insert({ ...daten, kolonne_id: $("kb-kolonne").value, datum: $("kb-datum").value }).select("id").single(); if(r.error) throw r.error; id = r.data.id; }
+      const g = anw.filter(a => !a.anwesend || gruende[a.mitglied_id]).map(a => ({ bericht_id: id, mitglied_id: a.mitglied_id, name: a.name, grund: a.anwesend ? null : a.grund }));
+      if(g.length){ const r = await sb.from("kolonnen_gruende").upsert(g); if(r.error) throw { code: "grund", e: r.error }; }
+      await grunddaten(); await oeffnen();
+      msg("Gespeichert.", "ok");
+    }catch(e){
+      const m = (e && e.message) || "";
+      msg(e && e.code === "frist" ? "Nicht gespeichert: Die Frist zum Ändern ist vorbei (Folgetag 18:00 Uhr)." :
+        e && e.code === "grund" ? "Bericht gespeichert, aber die Abwesenheitsgründe nicht. Bitte erneut tippen." :
+        /duplicate|unique/i.test(m) ? "Für diese Kolonne gibt es an diesem Tag schon einen Bericht. Bitte neu laden." :
+        /Zukunft/.test(m) ? "Das Datum darf nicht in der Zukunft liegen." :
+        e && (e.code === "42501" || /row-level|permission/i.test(m)) ? "Keine Berechtigung: Nur der Kolonnenführer dieser Kolonne oder ein Bauleiter darf schreiben." :
+        "Nicht gespeichert. Bitte Verbindung prüfen und erneut tippen.", "err");
+    }finally{ laeuft = false; $("kb-speichern").disabled = false; $("kb-speichern").dataset.ok = ""; $("kb-speichern").textContent = "Kolonnenbericht speichern"; }
+  }
+
+  function renderListe(){
+    $("kb-liste").innerHTML = berichte.slice(0, 40).map(b => {
+      const da = (b.anwesenheit || []).filter(a => a.anwesend).length, alle = (b.anwesenheit || []).length;
+      const p = (b.pausen || []).reduce((s, x) => s + dauer(x.von, x.bis), 0);
+      return `<button type="button" class="kb-karte" data-oeffne="${b.kolonne_id}|${b.datum}">
+        <span class="ko-name">${esc(fmtD(b.datum))} · Kolonne ${esc(kName(b.kolonne_id))}${b.nachgetragen ? ' <span class="kb-tag">nachgetragen</span>' : ""}</span>
+        <span class="ko-sub">${esc(t5(b.beginn))}–${esc(t5(b.ende))} Uhr, Pause ${p} Min. · ${da} von ${alle} da · ${esc(b.geschrieben_von_name)}</span></button>`;
+    }).join("") || '<p class="kb-hinweis">Noch keine Kolonnenberichte.</p>';
+  }
+
+  // Eingaben
+  $("kb-kolonne").addEventListener("change", oeffnen);
+  $("kb-datum").addEventListener("change", oeffnen);
+  $("kb-beginn").addEventListener("input", rechnen); $("kb-ende").addEventListener("input", rechnen);
+  $("kb-pause-neu").addEventListener("click", () => { pausen.push({ von: "", bis: "" }); renderForm(); });
+  $("kb-wetter-neu").addEventListener("click", () => { wetter.push({ von: "", bis: "", art: "Regen" }); renderForm(); });
+  $("kb-speichern").addEventListener("click", speichern);
+  $("view-kolonnen").addEventListener("input", ev => {
+    const t = ev.target, f = t.dataset.f; if(!f) return;
+    if(t.dataset.p) pausen[t.dataset.p][f] = t.value; else if(t.dataset.w) wetter[t.dataset.w][f] = t.value; else if(t.dataset.a) anw[t.dataset.a][f] = t.value;
+    rechnen();
+  });
+  $("view-kolonnen").addEventListener("change", ev => {
+    const t = ev.target;
+    if(t.dataset.grund) anw[t.dataset.grund].grund = t.value;
+    else if(t.dataset.w && t.dataset.f === "art") wetter[t.dataset.w].art = t.value;
+  });
+  $("view-kolonnen").addEventListener("click", ev => {
+    const t = ev.target.closest("button"); if(!t) return;
+    if(t.dataset.px){ pausen.splice(+t.dataset.px, 1); renderForm(); }
+    else if(t.dataset.wx){ wetter.splice(+t.dataset.wx, 1); renderForm(); }
+    else if(t.dataset.da){ anw[t.dataset.da].anwesend = true; renderForm(); }
+    else if(t.dataset.nda){ const a = anw[t.dataset.nda]; a.anwesend = false; delete a.beginn; delete a.ende; renderForm(); }
+    else if(t.dataset.zeit){ const a = anw[t.dataset.zeit]; a.beginn = $("kb-beginn").value; a.ende = $("kb-ende").value; renderForm(); }
+    else if(t.dataset.oeffne){ const [k, d] = t.dataset.oeffne.split("|"); $("kb-kolonne").value = k; $("kb-datum").value = d; oeffnen(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+    else if(t.dataset.unter){ unter(t.dataset.unter); }
+  });
+  $("kb-nt-ok").addEventListener("click", async () => {
+    const text = $("kb-nt-text").value.trim(); if(!text) return msg("Bitte den Nachtrag eintragen.", "err");
+    if(laeuft) return; laeuft = true; msg("Speichert …");
+    const r = await sb.from("kolonnen_nachtraege").insert({ bericht_id: aktuell.id, text });
+    laeuft = false;
+    if(r.error) return msg("Nachtrag nicht gespeichert. Nachträge sind nur bis einen Monat nach dem Berichtstag möglich.", "err");
+    $("kb-nt-text").value = ""; await oeffnen(); msg("Nachtrag gespeichert. Er kann nicht mehr geändert werden.", "ok");
+  });
+
+  function unter(w){
+    $("kb-bereich").hidden = w !== "bericht"; $("ko-verw").hidden = w !== "verwaltung";
+    document.querySelectorAll("#ko-unter button").forEach(b => b.setAttribute("aria-selected", b.dataset.unter === w));
+    if(w === "bericht") grunddaten().then(oeffnen).catch(() => {});
+  }
+
+  $("kb-datum").max = heute(); $("kb-datum").value = heute();
+  if(window.tbBereit) window.tbBereit.then(async x => {
+    sb = x.sb; ich = x.email.toLowerCase();
+    const n = await sb.rpc("mein_name"); $("kb-wer").textContent = (n.data || ich);
+    try{ await grunddaten(); await oeffnen(); }catch(e){ msg("Kolonnenberichte konnten nicht geladen werden. Seite neu laden.", "err"); }
+    document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible" && !$("kb-bereich").hidden) grunddaten().catch(() => {}); });
+  });
 })();
 </script>
 
