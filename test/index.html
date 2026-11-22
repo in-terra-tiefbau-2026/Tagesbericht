@@ -207,6 +207,9 @@ textarea{min-height:96px;resize:vertical}
 .kb-link{font:500 .88rem var(--f-body);background:none;border:0;color:var(--muted);text-decoration:underline;padding:4px 0;cursor:pointer;min-height:36px}
 .kb-zahl{font-family:var(--f-mono);text-transform:none;letter-spacing:0;margin-left:6px}
 .kb-karte{display:grid;gap:2px;text-align:left;font:inherit;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer}
+.kb-sprache{display:grid;grid-template-columns:1fr auto;gap:8px}
+.kb-sprache select{width:auto}
+#kb-mikro.an{background:var(--danger);color:#fff;border-color:var(--danger)}
 .kb-nt{border-left:3px solid var(--accent);padding:4px 0 4px 10px}
 #ko-verw[hidden],#kb-bereich[hidden]{display:none!important}
 button:disabled,input:disabled,select:disabled,textarea:disabled{opacity:.65}
@@ -629,8 +632,14 @@ button:disabled,input:disabled,select:disabled,textarea:disabled{opacity:.65}
             <div id="kb-anw" style="display:grid;gap:10px"></div>
           </div>
           <div class="group">
-            <h2>Notizen</h2>
+            <h2>Leistung und Notizen</h2>
+            <label for="kb-meter">Heute gegraben <span class="hint">in Metern, zum Feierabend</span><input id="kb-meter" type="number" inputmode="decimal" min="0" step="0.5" placeholder="z. B. 35"></label>
             <label for="kb-notizen">Bemerkungen zum Tag<textarea id="kb-notizen"></textarea></label>
+            <div class="kb-sprache" id="kb-sprache">
+              <button class="btn" type="button" id="kb-mikro">🎤 Sprechen</button>
+              <select id="kb-sprache-wahl" aria-label="Sprache für Spracheingabe"><option value="de-DE">Deutsch</option><option value="ru-RU">Русский</option></select>
+            </div>
+            <p class="kb-hinweis" id="kb-mikro-info"></p>
           </div>
         </div>
         <div class="msg" id="kb-msg" role="status"></div>
@@ -1630,13 +1639,13 @@ Beschädigt von: ${esc(Array.isArray(k.verursacher) ? k.verursacher.join(", ") :
       ]);
       (g.data || []).forEach(x => gruende[x.mitglied_id] = x.grund); nachtraege = n.data || [];
       pausen = (aktuell.pausen || []).map(x => ({ ...x })); wetter = (aktuell.wetter || []).map(x => ({ ...x }));
-      $("kb-beginn").value = t5(aktuell.beginn); $("kb-ende").value = t5(aktuell.ende); $("kb-notizen").value = aktuell.notizen || "";
+      $("kb-beginn").value = t5(aktuell.beginn); $("kb-ende").value = t5(aktuell.ende); $("kb-notizen").value = aktuell.notizen || ""; $("kb-meter").value = aktuell.meter ?? "";
       const bekannte = aktuell.anwesenheit || [];
       anw = bekannte.map(a => ({ ...a, grund: gruende[a.mitglied_id] || "" }));
       aktiveMa(k).forEach(m => { if(!anw.some(a => a.mitglied_id === m.id)) anw.push({ mitglied_id: m.id, name: m.name, funktion: m.funktion, anwesend: true }); });
     } else {
       pausen = [{ von: "12:00", bis: "12:30" }]; wetter = [];
-      $("kb-beginn").value = "07:00"; $("kb-ende").value = "16:00"; $("kb-notizen").value = "";
+      $("kb-beginn").value = "07:00"; $("kb-ende").value = "16:00"; $("kb-notizen").value = ""; $("kb-meter").value = "";
       anw = aktiveMa(k).map(m => ({ mitglied_id: m.id, name: m.name, funktion: m.funktion, anwesend: true, grund: "" }));
     }
     renderForm();
@@ -1690,6 +1699,7 @@ Beschädigt von: ${esc(Array.isArray(k.verursacher) ? k.verursacher.join(", ") :
       if(!a.anwesend && !a.grund) return `Bitte für ${a.name} einen Grund wählen.`;
       if(a.anwesend && (a.beginn || a.ende) && (!a.beginn || !a.ende || min(a.ende) <= min(a.beginn))) return `Bitte bei ${a.name} die eigene Zeit vollständig eintragen.`;
     }
+    const mt = $("kb-meter").value; if(mt !== "" && !(Number(mt) >= 0 && Number(mt) <= 100000)) return "Bitte bei den Metern eine Zahl eintragen.";
     if(!$("kb-datum").value || $("kb-datum").value > heute()) return "Das Datum darf nicht in der Zukunft liegen.";
     return null;
   }
@@ -1702,7 +1712,7 @@ Beschädigt von: ${esc(Array.isArray(k.verursacher) ? k.verursacher.join(", ") :
     }
     laeuft = true; $("kb-speichern").disabled = true; msg("Speichert …");
     const daten = {
-      beginn: $("kb-beginn").value, ende: $("kb-ende").value, pausen, wetter, notizen: $("kb-notizen").value.trim(),
+      beginn: $("kb-beginn").value, ende: $("kb-ende").value, pausen, wetter, notizen: $("kb-notizen").value.trim(), meter: $("kb-meter").value === "" ? null : Math.round(Number($("kb-meter").value) * 10) / 10,
       anwesenheit: anw.map(a => { const o = { mitglied_id: a.mitglied_id, name: a.name, funktion: a.funktion || "", anwesend: !!a.anwesend }; if(a.anwesend && a.beginn && a.ende){ o.beginn = a.beginn; o.ende = a.ende; } return o; })
     };
     try{
@@ -1730,7 +1740,7 @@ Beschädigt von: ${esc(Array.isArray(k.verursacher) ? k.verursacher.join(", ") :
       const p = (b.pausen || []).reduce((s, x) => s + dauer(x.von, x.bis), 0);
       return `<button type="button" class="kb-karte" data-oeffne="${b.kolonne_id}|${b.datum}">
         <span class="ko-name">${esc(fmtD(b.datum))} · Kolonne ${esc(kName(b.kolonne_id))}${b.nachgetragen ? ' <span class="kb-tag">nachgetragen</span>' : ""}</span>
-        <span class="ko-sub">${esc(t5(b.beginn))}–${esc(t5(b.ende))} Uhr, Pause ${p} Min. · ${da} von ${alle} da · ${esc(b.geschrieben_von_name)}</span></button>`;
+        <span class="ko-sub">${esc(t5(b.beginn))}–${esc(t5(b.ende))} Uhr, Pause ${p} Min.${b.meter != null ? ` · ${String(b.meter).replace(".", ",")} m` : ""} · ${da} von ${alle} da · ${esc(b.geschrieben_von_name)}</span></button>`;
     }).join("") || '<p class="kb-hinweis">Noch keine Kolonnenberichte.</p>';
   }
 
@@ -1775,6 +1785,28 @@ Beschädigt von: ${esc(Array.isArray(k.verursacher) ? k.verursacher.join(", ") :
     if(w === "bericht") grunddaten().then(oeffnen).catch(() => {});
   }
 
+  // Spracheingabe über die Spracherkennung des Handys/Browsers
+  (function(){
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if(!SR){ $("kb-sprache").hidden = true; $("kb-mikro-info").textContent = "Spracheingabe: das Mikrofon auf der Handy-Tastatur benutzen."; return; }
+    let rec = null;
+    try{ const l = localStorage.getItem("tb-sprache"); if(l) $("kb-sprache-wahl").value = l; }catch(e){}
+    $("kb-sprache-wahl").addEventListener("change", () => { try{ localStorage.setItem("tb-sprache", $("kb-sprache-wahl").value); }catch(e){} });
+    const aus = () => { $("kb-mikro").classList.remove("an"); $("kb-mikro").textContent = "🎤 Sprechen"; rec = null; };
+    $("kb-mikro").addEventListener("click", () => {
+      if(rec){ rec.stop(); return; }
+      rec = new SR(); rec.lang = $("kb-sprache-wahl").value; rec.interimResults = false; rec.continuous = true;
+      rec.onresult = ev => {
+        let t = ""; for(let i = ev.resultIndex; i < ev.results.length; i++) if(ev.results[i].isFinal) t += ev.results[i][0].transcript;
+        t = t.trim(); if(!t) return;
+        const f = $("kb-notizen"); f.value = (f.value ? f.value.replace(/\s+$/, "") + " " : "") + t.charAt(0).toUpperCase() + t.slice(1);
+      };
+      rec.onerror = ev => { $("kb-mikro-info").textContent = ev.error === "not-allowed" ? "Mikrofon nicht erlaubt. Bitte in den Einstellungen des Browsers erlauben." : "Spracheingabe hat nicht geklappt. Bitte noch einmal tippen."; };
+      rec.onend = aus;
+      try{ rec.start(); $("kb-mikro").classList.add("an"); $("kb-mikro").textContent = "⏹ Fertig"; $("kb-mikro-info").textContent = "Sprechen Sie jetzt. Zum Beenden auf „Fertig“ tippen."; }
+      catch(e){ aus(); }
+    });
+  })();
   $("kb-datum").max = heute(); $("kb-datum").value = heute();
   if(window.tbBereit) window.tbBereit.then(async x => {
     sb = x.sb; ich = x.email.toLowerCase();
