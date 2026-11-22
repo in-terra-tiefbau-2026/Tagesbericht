@@ -212,6 +212,7 @@ textarea{min-height:96px;resize:vertical}
 .kb-status{font-size:.92rem;background:var(--field);border:1px dashed var(--line);border-radius:8px;padding:10px 12px}
 .kb-status:empty{display:none}
 .kb-tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:var(--danger);color:#fff;border-radius:4px;padding:1px 6px}
+.kb-technik{font-size:.92rem;border-left:3px solid #2b8a3e;padding:4px 0 4px 10px}
 .kb-ue{font-weight:600;margin-bottom:6px}
 .kb-hinweis{color:var(--muted);font-size:.9rem;margin:0}
 .kb-zeile{display:grid;grid-template-columns:1fr auto 1fr auto;gap:8px;align-items:center}
@@ -663,7 +664,7 @@ button:disabled,input:disabled,select:disabled,textarea:disabled{opacity:.65}
       </div>
       <div class="msg" id="kt-msg" role="status"></div>
       <div class="group"><h2>Zu bestätigen</h2><div id="kt-eingang" style="display:grid;gap:10px"></div></div>
-      <div class="group"><h2>Geräte bei dieser Kolonne</h2><div id="kt-liste" style="display:grid;gap:10px"></div></div>
+      <div class="group"><h2>Bei uns – noch nicht zurückgegeben <span class="kb-zahl" id="kt-zahl"></span></h2><div id="kt-liste" style="display:grid;gap:10px"></div></div>
       <p class="note">Jede Übergabe gilt erst, wenn die andere Seite „Erhalten“ tippt. Alle Übergaben bleiben mit Datum, Uhrzeit und Namen gespeichert und können nicht gelöscht werden.</p>
     </div>
     <div id="kb-bereich" style="display:grid;gap:14px">
@@ -676,6 +677,7 @@ button:disabled,input:disabled,select:disabled,textarea:disabled{opacity:.65}
           <label for="kb-datum">Datum<input type="date" id="kb-datum"></label>
         </div>
         <div class="kb-status" id="kb-status"></div>
+        <div class="kb-technik" id="kb-technik" hidden></div>
       </div>
       <div id="kb-inhalt" style="display:grid;gap:14px">
         <div id="kb-formular" style="display:grid;gap:14px">
@@ -1987,13 +1989,24 @@ Beschädigt von: ${esc(Array.isArray(k.verursacher) ? k.verursacher.join(", ") :
       <b>${esc(gName(g))}</b> von ${esc(u.gegeben_von_name)}, ${esc(zeit(u.gegeben_am))}
       ${istF ? `<div class="ko-btns" style="margin-top:8px"><button type="button" data-kt-ok="${u.id}">✔ Erhalten</button><button type="button" class="weg" data-kt-nein="${u.id}">Nicht erhalten</button></div>` : ""}</div>`; }).join("") : '<p class="kb-hinweis">Nichts zu bestätigen.</p>';
     const meine = geraete.filter(g => g.kolonne_id === k);
+    $("kt-zahl").textContent = meine.length ? `(${meine.length})` : "";
+    renderBerichtTechnik();
     $("kt-liste").innerHTML = meine.map(g => { const o = offeneVon(g.id), u = letzteAn(g.id); return `<div class="tg-karte">
-      <div class="tg-kopf"><div><div class="ko-name">${esc(gName(g))}</div><div class="ko-sub">${u ? `erhalten ${esc(zeit(u.erledigt_am))}` : ""}</div></div>${badge(g.nutzung)}</div>
+      <div class="tg-kopf"><div><div class="ko-name">${esc(gName(g))}</div><div class="ko-sub">${u ? `erhalten ${esc(zeit(u.erledigt_am))} · ` : ""}<b>noch nicht zurückgegeben</b></div></div>${badge(g.nutzung)}</div>
       ${o ? `<div class="tg-offen">⏳ Rückgabe wartet auf Bestätigung durch den Geräteverwalter</div>${istF && o.gegeben_von === ich ? `<div class="ko-btns"><button type="button" data-kt-zurueckziehen="${o.id}">Rückgabe zurückziehen</button></div>` : ""}`
         : istF ? `<div class="tg-nutz" role="group" aria-label="Nutzung">${NUTZ.map(n => `<button type="button" data-kt-nutz="${g.id}|${n}" aria-pressed="${g.nutzung === n}" class="tg-${n}">${n}</button>`).join("")}</div>
         <button class="btn" type="button" data-kt-zurueck="${g.id}">An Geräteverwalter zurückgeben</button>` : ""}
       ${verlaufKnopf(g)}</div>`; }).join("") || '<p class="kb-hinweis">Diese Kolonne hat zurzeit keine Geräte.</p>';
   }
+
+  // Kurzliste im Kolonnenbericht: welche Technik hat die gewählte Kolonne gerade
+  function renderBerichtTechnik(){
+    const k = $("kb-kolonne").value, l = geraete.filter(g => g.kolonne_id === k);
+    const w = uebergaben.filter(u => u.status === "offen" && u.an_kolonne === k).length;
+    $("kb-technik").hidden = !k || (!l.length && !w);
+    $("kb-technik").innerHTML = `<b>Technik bei der Kolonne (noch nicht zurückgegeben):</b> ${l.length ? l.map(g => esc(gName(g)) + " " + `<span class="tg-n tg-${g.nutzung}">${esc(g.nutzung)}</span>`).join(", ") : "keine"}${w ? `<br>⏳ ${w} Gerät(e) warten auf Bestätigung („Technik“ oben).` : ""}`;
+  }
+  $("kb-kolonne").addEventListener("change", renderBerichtTechnik);
 
   // ---------- Hinweisfenster beim Öffnen: "Technik erhalten? Bestätigen" ----------
   function renderPopup(){
