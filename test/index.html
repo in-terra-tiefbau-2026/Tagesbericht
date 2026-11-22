@@ -1891,7 +1891,7 @@ Beschädigt von: ${esc(Array.isArray(k.verursacher) ? k.verursacher.join(", ") :
   const ARTEN = ["Bagger","Minibagger","Radlader","Dumper","LKW","Transporter","PKW","Tankwagen","Erdrakete","Rüttelplatte","Kanister","Sonstige"];
   const FARBEN = { Gelb:"#f2c200", Blau:"#1971c2", Rot:"#c92a2a", "Grün":"#2b8a3e", Orange:"#e8590c", Lila:"#7048e8", Braun:"#8d5524", Grau:"#868e96", "Weiß":"#ffffff", Schwarz:"#222222" };
   const NUTZ = ["benutzt", "unbenutzt", "gelagert"];
-  let sb = null, ich = "", verwalter = false, geraete = [], uebergaben = [], kolonnen = [], fuehrer = [], fuehrerVon = {}, laeuft = false, offenVerlauf = null, spaeter = false;
+  let sb = null, ich = "", verwalter = false, geraete = [], uebergaben = [], kolonnen = [], fuehrer = {}, fuehrerLogin = {}, fuehrerVon = {}, laeuft = false, offenVerlauf = null, spaeter = false;
   const zeit = s => new Date(s).toLocaleString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
   const kName = id => { if(!id) return "Lager / Geräteverwalter"; const k = kolonnen.find(x => x.id === id); return k ? `Kolonne ${k.nummer} / ${k.farbe}` : "Kolonne ?"; };
   const gName = g => g ? (g.bezeichnung && g.bezeichnung !== g.art ? `${g.art} – ${g.bezeichnung}` : g.art) : "Gerät";
@@ -1900,6 +1900,7 @@ Beschädigt von: ${esc(Array.isArray(k.verursacher) ? k.verursacher.join(", ") :
   const fehler = e => {
     const m = (e && e.message) || "";
     if(/empfangende Seite/.test(m)) return "Nur die empfangende Seite kann bestätigen.";
+    if(/ohne Login/.test(m)) return "Nicht ausgegeben: Der Kolonnenführer dieser Kolonne hat keinen Login und könnte nicht bestätigen. Bitte zuerst unter „Kolonne → Kolonnen & Leute“ jemanden mit Login nach oben setzen.";
     if(/nicht offen/.test(m)) return "Diese Übergabe ist schon erledigt. Seite neu laden.";
     if(/duplicate|unique/i.test(m)) return "Für dieses Gerät ist schon eine Übergabe offen.";
     if(/Kolonnenführer/.test(m)) return "Das kann nur der Kolonnenführer dieser Kolonne.";
@@ -1917,11 +1918,11 @@ Beschädigt von: ${esc(Array.isArray(k.verursacher) ? k.verursacher.join(", ") :
       sb.from("geraete").select("*").eq("aktiv", true).order("art").order("bezeichnung"),
       sb.from("geraete_uebergaben").select("*").order("gegeben_am", { ascending: false }).limit(500),
       sb.from("kolonnen").select("id,nummer,farbe").eq("aktiv", true).order("nummer"),
-      sb.from("kolonne_mitglieder").select("kolonne_id,name,position,angelegt_am").eq("aktiv", true)
+      sb.from("kolonne_mitglieder").select("kolonne_id,name,email,position,angelegt_am").eq("aktiv", true)
     ]);
     if(g.error || u.error || k.error) throw (g.error || u.error || k.error);
     geraete = g.data; uebergaben = u.data; kolonnen = k.data;
-    fuehrer = {}; (m.data || []).sort((a, b) => a.position - b.position).forEach(x => { if(!fuehrer[x.kolonne_id]) fuehrer[x.kolonne_id] = x.name; });
+    fuehrer = {}; fuehrerLogin = {}; (m.data || []).sort((a, b) => a.position - b.position || String(a.angelegt_am).localeCompare(String(b.angelegt_am))).forEach(x => { if(!(x.kolonne_id in fuehrer)){ fuehrer[x.kolonne_id] = x.name; fuehrerLogin[x.kolonne_id] = !!x.email; } });
     const f = await Promise.all(kolonnen.map(x => sb.rpc("ist_kolonnenfuehrer", { k: x.id })));
     fuehrerVon = {}; kolonnen.forEach((x, i) => fuehrerVon[x.id] = !f[i].error && !!f[i].data);
     renderVerwalter(); renderKolonne(); renderPopup();
@@ -1935,7 +1936,12 @@ Beschädigt von: ${esc(Array.isArray(k.verursacher) ? k.verursacher.join(", ") :
   const verlaufKnopf = g => `<button type="button" class="kb-link" data-tg-verlauf="${g.id}">${offenVerlauf === g.id ? "Verlauf ausblenden" : "Verlauf anzeigen"}</button>${offenVerlauf === g.id ? verlauf(g.id) : ""}`;
 
   // ---------- Reiter Technik (nur Geräteverwalter / Geschäftsführung) ----------
-  function empfVorbelegen(){ const k = $("tg-kol").value; $("tg-empf").value = fuehrer[k] || ""; }
+  function empfVorbelegen(){
+    const k = $("tg-kol").value; $("tg-empf").value = fuehrer[k] || "";
+    const m = $("tg-msg");
+    if(k && !fuehrerLogin[k]){ m.textContent = `Achtung: ${fuehrer[k] || "Der Kolonnenführer"} hat keinen Login und kann den Empfang nicht bestätigen. Zuerst unter „Kolonne → Kolonnen & Leute“ jemanden mit Login nach oben setzen.`; m.className = "msg err"; }
+    else if(m.className.includes("err")){ m.textContent = ""; m.className = "msg"; }
+  }
   function renderVerwalter(){
     if(!verwalter) return;
     const alt = $("tg-kol").value;
