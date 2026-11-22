@@ -1,7 +1,7 @@
 // Service Worker für den Tagesbericht:
 // 1. App-Hülle für schlechtes Netz auf der Baustelle (Netz zuerst, Zwischenspeicher nur als Rückfall).
 // 2. Fotos, PDFs und Pläne (Adresse _blob/<id>) werden mit der Anmeldung aus dem privaten Speicher geholt.
-var CACHE = 'tagesbericht-shell-v1';
+var CACHE = 'tagesbericht-shell-v2';
 var SHELL = ['./', './index.html', './manifest.json', './icon.svg'];
 
 self.addEventListener('install', function(event){

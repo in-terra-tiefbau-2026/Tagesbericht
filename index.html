@@ -160,6 +160,83 @@ textarea{min-height:96px;resize:vertical}
 /* Ergänzung Version 6: Reiter Urlaub */
 .tabs.vier{grid-template-columns:repeat(4,1fr)}
 .tabs.vier button{padding:10px 2px;font-size:.88rem}
+.tabs.fuenf{display:flex;flex-wrap:wrap}
+.tabs.fuenf button{flex:1 0 auto;padding:10px 9px;font-size:.85rem;white-space:nowrap}
+.ko-karte{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.ko-kopf{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.ko-farbe{width:28px;height:28px;border-radius:6px;border:1px solid var(--line);flex:none}
+.ko-titel{font:700 1.25rem var(--f-display)}
+.ko-fuehrer{padding:10px 16px;font-size:.92rem;display:grid;gap:2px;border-bottom:1px solid var(--line)}
+.ko-warn{color:var(--danger);font-weight:600}
+.ko-ma{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:10px 16px;border-bottom:1px solid var(--line)}
+.ko-ma:last-child{border-bottom:0}
+.ko-pos{font:500 .8rem var(--f-mono);color:var(--muted);min-width:1.6em}
+.ko-name{font-weight:600}
+.ko-sub{font-size:.82rem;color:var(--muted);overflow-wrap:anywhere}
+.ko-rolle{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:var(--accent);color:var(--accent-ink);border-radius:4px;padding:1px 6px;margin-left:6px}
+.ko-rolle.v{background:var(--field);color:var(--ink);border:1px solid var(--line)}
+.ko-btns{display:flex;gap:6px}
+.ko-btns button{font:600 .85rem var(--f-body);min-width:40px;min-height:40px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;padding:0 8px}
+.ko-btns button.weg{color:var(--danger)}
+.ko-neu{padding:12px 16px;display:grid;gap:10px;background:var(--field)}
+.ko-konto{display:grid;grid-template-columns:1fr;gap:8px;padding:12px 0;border-bottom:1px solid var(--line)}
+.ko-konto:last-child{border-bottom:0}
+.ko-checks{display:flex;gap:16px;flex-wrap:wrap}
+.ko-checks label{display:flex;align-items:center;gap:8px;font-weight:500}
+.ko-checks input{width:22px;height:22px;min-height:0}
+.tabs.zwei{grid-template-columns:1fr 1fr}
+#ko-unter{grid-template-columns:repeat(3,1fr)}
+#ko-unter button{font-size:.85rem;padding:10px 2px}
+#kt-bereich[hidden],#view-technik[hidden]{display:none!important}
+.tg-karte{display:grid;gap:8px;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--field)}
+.tg-kopf{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.tg-n{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;border-radius:4px;padding:2px 8px;white-space:nowrap}
+.tg-benutzt{background:#2b8a3e;color:#fff}
+.tg-unbenutzt{background:#868e96;color:#fff}
+.tg-gelagert,.tg-lager{background:#1971c2;color:#fff}
+.tg-offen{border:2px dashed var(--accent);border-radius:8px;padding:8px 10px;font-size:.92rem}
+.tg-ausgabe{display:grid;grid-template-columns:1fr auto;gap:8px}
+.tg-nutz{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.tg-nutz button{font:600 .88rem var(--f-body);border:0;background:var(--card);color:var(--ink);min-height:44px;cursor:pointer}
+.tg-nutz button[aria-pressed="true"].tg-benutzt{background:#2b8a3e;color:#fff}
+.tg-nutz button[aria-pressed="true"].tg-unbenutzt{background:#868e96;color:#fff}
+.tg-nutz button[aria-pressed="true"].tg-gelagert{background:#1971c2;color:#fff}
+.tg-popup{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.45);display:grid;place-items:end center;padding:16px}
+.tg-popup[hidden]{display:none!important}
+.tg-popup-in{background:var(--card);color:var(--ink);border-radius:14px;padding:18px;width:100%;max-width:520px;display:grid;gap:12px;max-height:85vh;overflow:auto}
+.tg-popup-in h2{font:700 1.4rem var(--f-display);margin:0}
+.tg-gruppe{display:grid;gap:8px}
+.tg-gruppe h3{font:700 1.05rem var(--f-display);margin:0;display:flex;align-items:center;gap:8px}
+.tg-verlauf{display:grid;gap:8px;font-size:.88rem;border-top:1px solid var(--line);padding-top:8px}
+.kb-wer{font-size:1.05rem}
+.kb-status{font-size:.92rem;background:var(--field);border:1px dashed var(--line);border-radius:8px;padding:10px 12px}
+.kb-status:empty{display:none}
+.kb-tag{display:inline-block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:var(--danger);color:#fff;border-radius:4px;padding:1px 6px}
+.kb-technik{font-size:.92rem;border-left:3px solid #2b8a3e;padding:4px 0 4px 10px}
+.kb-ue{font-weight:600;margin-bottom:6px}
+.kb-hinweis{color:var(--muted);font-size:.9rem;margin:0}
+.kb-zeile{display:grid;grid-template-columns:1fr auto 1fr auto;gap:8px;align-items:center}
+.kb-zeile .kb-art{grid-column:1 / -1}
+.kb-x{width:44px;height:48px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--danger);font-size:1.3rem;cursor:pointer}
+.kb-ma{display:grid;grid-template-columns:1fr auto;gap:8px 10px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--field)}
+.kb-ma.weg{border-color:var(--danger)}
+.kb-voll{grid-column:1 / -1}
+.kb-voll .kb-zeile{grid-template-columns:1fr auto 1fr}
+.kb-voll .kb-zeile > span:first-child{grid-column:1 / -1;font-size:.85rem;color:var(--muted)}
+.kb-zeile input{min-width:0}
+.kb-da{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.kb-da button{font:600 .9rem var(--f-body);border:0;background:var(--card);color:var(--ink);padding:0 12px;min-height:44px;cursor:pointer}
+.kb-da button[aria-pressed="true"]{background:var(--ok);color:#fff}
+.kb-da button[data-nda][aria-pressed="true"]{background:var(--danger)}
+.kb-link{font:500 .88rem var(--f-body);background:none;border:0;color:var(--muted);text-decoration:underline;padding:4px 0;cursor:pointer;min-height:36px}
+.kb-zahl{font-family:var(--f-mono);text-transform:none;letter-spacing:0;margin-left:6px}
+.kb-karte{display:grid;gap:2px;text-align:left;font:inherit;color:var(--ink);background:var(--field);border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer}
+.kb-sprache{display:grid;grid-template-columns:1fr auto;gap:8px}
+.kb-sprache select{width:auto}
+#kb-mikro.an{background:var(--danger);color:#fff;border-color:var(--danger)}
+.kb-nt{border-left:3px solid var(--accent);padding:4px 0 4px 10px}
+#ko-verw[hidden],#kb-bereich[hidden]{display:none!important}
+button:disabled,input:disabled,select:disabled,textarea:disabled{opacity:.65}
 .uitem{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:4px}
 .uitem .uhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
 .uitem strong{font-family:var(--f-display);font-size:1.15rem;letter-spacing:.01em;min-width:0;overflow-wrap:anywhere}
@@ -282,6 +359,8 @@ textarea{min-height:96px;resize:vertical}
     me: async function(){ return { id: sitzung.user.id, name: sitzung.user.email }; }
   };
   window.claude = { use: function(name){ return sessionP.then(function(){ return ({ db: db, assets: assets, user: user })[name] || null; }); } };
+  // Für die Kolonnen-Teile (eigene Tabellen mit strengeren Regeln)
+  window.tbBereit = sessionP.then(function(){ return { sb: sb, email: sitzung.user.email }; });
 
   function kontoZeile(email){
     var brand = document.querySelector("header.top .brand"); if(!brand || $("tb-konto")) return;
@@ -342,11 +421,13 @@ textarea{min-height:96px;resize:vertical}
       <h1><span>In Terra</span>Tagesbericht</h1>
       <div class="mode" id="mode">Lädt …</div>
     </div>
-    <div class="tabs vier" role="tablist">
+    <div class="tabs fuenf" role="tablist">
       <button id="tab-form" role="tab" aria-selected="true">Erfassen</button>
       <button id="tab-list" role="tab" aria-selected="false">Berichte <span class="count" id="count"></span></button>
       <button id="tab-plan" role="tab" aria-selected="false">Pläne</button>
       <button id="tab-urlaub" role="tab" aria-selected="false">Urlaub</button>
+      <button id="tab-kolonnen" role="tab" aria-selected="false">Kolonne</button>
+      <button id="tab-technik" role="tab" aria-selected="false" hidden>Technik</button>
     </div>
   </header>
 
@@ -360,7 +441,7 @@ textarea{min-height:96px;resize:vertical}
             <label for="datum"><span class="req">Datum</span><input type="date" id="datum" required></label>
             <label>Kalenderwoche<div class="kw" id="kw">–</div></label>
           </div>
-          <label for="bauleiter"><span class="req">Verantwortlicher Bauleiter</span>
+          <label for="bauleiter"><span class="req">Verantwortliche/r der Kolonne</span>
             <input id="bauleiter" list="bauleiter-liste" autocomplete="off" placeholder="Name" required>
             <datalist id="bauleiter-liste"></datalist>
           </label>
@@ -489,7 +570,7 @@ textarea{min-height:96px;resize:vertical}
   <!-- Übersicht für die Geschäftsführung -->
   <section class="view" id="view-list" hidden>
     <div class="filters">
-      <label for="flt-bl">Bauleiter<select id="flt-bl"><option value="">Alle</option></select></label>
+      <label for="flt-bl">Verantwortlich<select id="flt-bl"><option value="">Alle</option></select></label>
       <label for="flt-kw">Kalenderwoche<select id="flt-kw"><option value="">Alle</option></select></label>
     </div>
     <div id="list" style="display:grid;gap:10px"></div>
@@ -538,6 +619,131 @@ textarea{min-height:96px;resize:vertical}
     </div>
     <div id="u-list" style="display:grid;gap:10px"></div>
     <p class="note">Hier nur Urlaub eintragen, keine Krankheit und keine Gründe. Feiertage sind bei den Arbeitstagen nicht abgezogen. Nur Testbetrieb: bitte keine echten Namen.</p>
+  </section>
+
+  <!-- Technik (Ergänzung 22.11.2026), nur Geräteverwalter und Geschäftsführung -->
+  <section class="view" id="view-technik" hidden>
+    <div class="group">
+      <h2>Technik ausgeben</h2>
+      <div class="row">
+        <label for="tg-art"><span class="req">Gerät</span><select id="tg-art"></select></label>
+        <label for="tg-kol"><span class="req">An Kolonne</span><select id="tg-kol"></select></label>
+      </div>
+      <label for="tg-nr">Genaue Bezeichnung / Nr. <span class="hint">optional, z. B. „Bagger 3“ oder Kennzeichen</span><input id="tg-nr" autocomplete="off"></label>
+      <label for="tg-empf">Empfänger <span class="hint">wird mit dem Kolonnenführer vorbelegt</span><input id="tg-empf" autocomplete="off"></label>
+      <div class="msg" id="tg-msg" role="status"></div>
+      <button class="save" type="button" id="tg-ausgeben">Ausgegeben</button>
+    </div>
+    <div class="group"><h2>Wartet auf Bestätigung</h2><div id="tg-wartet" style="display:grid;gap:10px"></div></div>
+    <div class="group"><h2>Rückgaben bestätigen</h2><div id="tg-eingang" style="display:grid;gap:10px"></div></div>
+    <div class="group"><h2>Bei den Kolonnen</h2><div id="tg-liste" style="display:grid;gap:14px"></div></div>
+    <p class="note">Ein Gerät gilt erst als übergeben, wenn der Kolonnenführer „Erhalten“ bestätigt. Alle Übergaben bleiben mit Datum, Uhrzeit und Namen gespeichert und können nicht gelöscht werden.</p>
+  </section>
+  <div class="tg-popup" id="tg-popup" hidden role="dialog" aria-modal="true" aria-labelledby="tg-popup-titel">
+    <div class="tg-popup-in">
+      <h2 id="tg-popup-titel">Technik erhalten?</h2>
+      <div id="tg-popup-liste" style="display:grid;gap:12px"></div>
+      <div class="msg" id="tg-popup-msg" role="status"></div>
+      <button class="btn" type="button" id="tg-popup-spaeter">Später</button>
+    </div>
+  </div>
+
+  <!-- Kolonnen (Ergänzung 22.11.2026) -->
+  <section class="view" id="view-kolonnen" hidden>
+    <div class="tabs zwei" id="ko-unter" role="tablist">
+      <button type="button" role="tab" data-unter="bericht" aria-selected="true">Kolonnenbericht</button>
+      <button type="button" role="tab" data-unter="technik" aria-selected="false">Technik</button>
+      <button type="button" role="tab" data-unter="verwaltung" aria-selected="false">Kolonnen &amp; Leute</button>
+    </div>
+    <div id="kt-bereich" hidden style="display:grid;gap:14px">
+      <div class="group">
+        <h2>Technik der Kolonne</h2>
+        <p class="kb-hinweis" id="kt-leer" hidden>Sie sind keiner Kolonne zugeordnet.</p>
+        <label for="kt-kolonne">Kolonne<select id="kt-kolonne"></select></label>
+        <p class="kb-hinweis" id="kt-rolle"></p>
+      </div>
+      <div class="msg" id="kt-msg" role="status"></div>
+      <div class="group"><h2>Zu bestätigen</h2><div id="kt-eingang" style="display:grid;gap:10px"></div></div>
+      <div class="group"><h2>Bei uns – noch nicht zurückgegeben <span class="kb-zahl" id="kt-zahl"></span></h2><div id="kt-liste" style="display:grid;gap:10px"></div></div>
+      <p class="note">Jede Übergabe gilt erst, wenn die andere Seite „Erhalten“ tippt. Alle Übergaben bleiben mit Datum, Uhrzeit und Namen gespeichert und können nicht gelöscht werden.</p>
+    </div>
+    <div id="kb-bereich" style="display:grid;gap:14px">
+      <div class="group">
+        <h2>Kolonnenbericht</h2>
+        <div class="kb-wer">Es schreibt: <b id="kb-wer">…</b></div>
+        <p class="kb-hinweis" id="kb-leer" hidden>Sie sind keiner Kolonne zugeordnet. Bitte bei der Geschäftsführung melden.</p>
+        <div class="row">
+          <label for="kb-kolonne">Kolonne<select id="kb-kolonne"></select></label>
+          <label for="kb-datum">Datum<input type="date" id="kb-datum"></label>
+        </div>
+        <div class="kb-status" id="kb-status"></div>
+        <div class="kb-technik" id="kb-technik" hidden></div>
+      </div>
+      <div id="kb-inhalt" style="display:grid;gap:14px">
+        <div id="kb-formular" style="display:grid;gap:14px">
+          <div class="group">
+            <h2>Arbeitszeit der Kolonne</h2>
+            <div class="row">
+              <label for="kb-beginn"><span class="req">Gekommen</span><input type="time" id="kb-beginn"></label>
+              <label for="kb-ende"><span class="req">Beendet</span><input type="time" id="kb-ende"></label>
+            </div>
+            <div><div class="kb-ue">Pausen</div><div id="kb-pausen" style="display:grid;gap:8px"></div></div>
+            <button class="btn" type="button" id="kb-pause-neu">+ Pause</button>
+            <div><div class="kb-ue">Wetterbehinderung</div><div id="kb-wetter" style="display:grid;gap:8px"></div></div>
+            <button class="btn" type="button" id="kb-wetter-neu">+ Wetterbehinderung</button>
+            <div class="calc" id="kb-summe"></div>
+          </div>
+          <div class="group">
+            <h2>Wer war da? <span class="kb-zahl" id="kb-anw-zahl"></span></h2>
+            <div id="kb-anw" style="display:grid;gap:10px"></div>
+          </div>
+          <div class="group">
+            <h2>Leistung und Notizen</h2>
+            <label for="kb-meter">Heute gegraben <span class="hint">in Metern, zum Feierabend</span><input id="kb-meter" type="number" inputmode="decimal" min="0" step="0.5" placeholder="z. B. 35"></label>
+            <label for="kb-notizen">Bemerkungen zum Tag<textarea id="kb-notizen"></textarea></label>
+            <div class="kb-sprache" id="kb-sprache">
+              <button class="btn" type="button" id="kb-mikro">🎤 Sprechen</button>
+              <select id="kb-sprache-wahl" aria-label="Sprache für Spracheingabe"><option value="de-DE">Deutsch</option><option value="ru-RU">Русский</option></select>
+            </div>
+            <p class="kb-hinweis" id="kb-mikro-info"></p>
+          </div>
+        </div>
+        <div class="msg" id="kb-msg" role="status"></div>
+        <button class="save" id="kb-speichern" type="button">Kolonnenbericht speichern</button>
+        <div class="group" id="kb-nachtrag-box" hidden>
+          <h2>Nachträge</h2>
+          <div id="kb-nachtraege" style="display:grid;gap:10px"></div>
+          <div id="kb-nt-neu" style="display:grid;gap:10px">
+            <label for="kb-nt-text">Nachtrag hinzufügen <span class="hint">wird mit Datum und Namen gespeichert und kann nicht geändert werden</span><textarea id="kb-nt-text"></textarea></label>
+            <button class="btn" type="button" id="kb-nt-ok">Nachtrag speichern</button>
+          </div>
+          <p class="kb-hinweis" id="kb-nt-zu" hidden>Nachträge sind nur bis einen Monat nach dem Berichtstag möglich.</p>
+        </div>
+        <div class="group">
+          <h2>Letzte Kolonnenberichte</h2>
+          <div id="kb-liste" style="display:grid;gap:8px"></div>
+        </div>
+      </div>
+    </div>
+    <div id="ko-verw" hidden style="display:grid;gap:14px">
+    <div class="msg" id="ko-msg" role="status"></div>
+    <div class="group" id="ko-anlegen" hidden>
+      <h2>Neue Kolonne anlegen</h2>
+      <div class="row">
+        <label for="ko-nr"><span class="req">Nummer</span><input id="ko-nr" inputmode="numeric" placeholder="z. B. 03" maxlength="10"></label>
+        <label for="ko-farbe"><span class="req">Farbe</span><select id="ko-farbe"></select></label>
+      </div>
+      <button class="save" id="ko-anlegen-btn" type="button">Kolonne anlegen</button>
+    </div>
+    <div id="ko-liste" style="display:grid;gap:14px"></div>
+    <div class="group" id="ko-konten" hidden>
+      <h2>Zugänge und Rollen</h2>
+      <p class="note" style="margin:0">Hier stehen alle freigeschalteten Logins. Name eintragen und Rolle ankreuzen. Kolonnenführer ist, wer in seiner Kolonne ganz oben steht.</p>
+      <div id="ko-konten-liste"></div>
+    </div>
+    <p class="note">Wer in der Liste ganz oben steht, ist Kolonnenführer und schreibt den Kolonnenbericht. Nach oben kann nur, wer einen Login hat. Mitarbeiter werden nicht gelöscht, sondern nur aus der Kolonne genommen. Nur Testbetrieb: bitte keine echten Namen.</p>
+    </div>
+    <datalist id="ko-funktionen"><option>Vorarbeiter</option><option>Tiefbauer</option><option>Baggerfahrer</option><option>LKW-Fahrer</option><option>Pflasterer</option><option>Helfer</option><option>Monteur</option></datalist>
   </section>
 </div>
 
@@ -786,7 +992,7 @@ textarea{min-height:96px;resize:vertical}
   function pruefen(){
     document.querySelectorAll(".field-err").forEach(el => el.classList.remove("field-err"));
     const fehlt = [];
-    [["datum","Datum"],["bauleiter","Bauleiter"],["adresse","Projektadresse"],["beginn","Beginn"],["ende","Ende"]].forEach(([id,name]) => {
+    [["datum","Datum"],["bauleiter","Verantwortliche/r der Kolonne"],["adresse","Projektadresse"],["beginn","Beginn"],["ende","Ende"]].forEach(([id,name]) => {
       if(!$(id).value.trim()){ fehlt.push(name); $(id).closest("label").classList.add("field-err"); }
     });
     if(fehlt.length) return "Bitte ausfüllen: " + fehlt.join(", ") + ".";
@@ -1201,8 +1407,8 @@ Beschädigt von: ${esc(Array.isArray(k.verursacher) ? k.verursacher.join(", ") :
   // ---------- Reiter ----------
   function zeige(tab){
     const form = tab === "form";
-    $("view-form").hidden = !form; $("view-list").hidden = tab !== "list"; $("view-plan").hidden = tab !== "plan"; $("view-urlaub").hidden = tab !== "urlaub"; $("savebar").hidden = !form;
-    $("tab-form").setAttribute("aria-selected", form); $("tab-list").setAttribute("aria-selected", tab === "list"); $("tab-plan").setAttribute("aria-selected", tab === "plan"); $("tab-urlaub").setAttribute("aria-selected", tab === "urlaub");
+    $("view-form").hidden = !form; $("view-list").hidden = tab !== "list"; $("view-plan").hidden = tab !== "plan"; $("view-urlaub").hidden = tab !== "urlaub"; $("view-kolonnen").hidden = tab !== "kolonnen"; $("view-technik").hidden = tab !== "technik"; $("savebar").hidden = !form;
+    $("tab-form").setAttribute("aria-selected", form); $("tab-list").setAttribute("aria-selected", tab === "list"); $("tab-plan").setAttribute("aria-selected", tab === "plan"); $("tab-urlaub").setAttribute("aria-selected", tab === "urlaub"); $("tab-kolonnen").setAttribute("aria-selected", tab === "kolonnen"); $("tab-technik").setAttribute("aria-selected", tab === "technik");
     if(tab === "plan") requestAnimationFrame(() => plViewer.redraw());
     if(form) requestAnimationFrame(() => formViewer.redraw());
     try{ localStorage.setItem(LS_KEY + "-tab", tab); }catch(e){}
@@ -1212,7 +1418,9 @@ Beschädigt von: ${esc(Array.isArray(k.verursacher) ? k.verursacher.join(", ") :
   $("tab-list").addEventListener("click", () => zeige("list"));
   $("tab-plan").addEventListener("click", () => zeige("plan"));
   $("tab-urlaub").addEventListener("click", () => zeige("urlaub"));
-  let startTab = location.hash === "#uebersicht" ? "list" : location.hash === "#plaene" ? "plan" : location.hash === "#urlaub" ? "urlaub" : "form";
+  $("tab-kolonnen").addEventListener("click", () => zeige("kolonnen"));
+  $("tab-technik").addEventListener("click", () => zeige("technik"));
+  let startTab = location.hash === "#uebersicht" ? "list" : location.hash === "#plaene" ? "plan" : location.hash === "#urlaub" ? "urlaub" : location.hash === "#kolonnen" ? "kolonnen" : location.hash === "#technik" ? "technik" : "form";
   if(!location.hash){ try{ startTab = localStorage.getItem(LS_KEY + "-tab") || "form"; }catch(e){} }
 
   // ---------- Start ----------
@@ -1314,6 +1522,528 @@ Beschädigt von: ${esc(Array.isArray(k.verursacher) ? k.verursacher.join(", ") :
         () => msg("Verbindung unterbrochen. Seite neu laden.", "err"));
     }).catch(lokal);
   } else lokal();
+})();
+</script>
+
+<script>
+/* Ergänzung 22.11.2026: Kolonnen verwalten (eigene Tabellen kolonnen + kolonne_mitglieder, Regeln in der Datenbank) */
+(function(){
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const FARBEN = { Gelb:"#f2c200", Blau:"#1971c2", Rot:"#c92a2a", "Grün":"#2b8a3e", Orange:"#e8590c", Lila:"#7048e8", Braun:"#8d5524", Grau:"#868e96", "Weiß":"#ffffff", Schwarz:"#222222" };
+  let sb = null, chef = false, kolonnen = [], mitglieder = [], konten = [], sicher = null, laeuft = false;
+  const msg = (t, cls) => { const m = $("ko-msg"); m.textContent = t || ""; m.className = "msg " + (cls || ""); };
+  $("ko-farbe").innerHTML = Object.keys(FARBEN).map(f => `<option>${esc(f)}</option>`).join("");
+
+  const fehlerText = e => {
+    const m = (e && e.message) || "";
+    if(/nicht freigeschaltet/.test(m)) return "Diese E-Mail hat keinen freigeschalteten Login.";
+    if(/duplicate|unique/i.test(m)) return "Diese Kolonnennummer gibt es schon.";
+    if(e && (e.code === "42501" || /row-level|permission/i.test(m))) return "Keine Berechtigung. Nur die Geschäftsführung darf Kolonnen ändern.";
+    return "Nicht gespeichert. Bitte Verbindung prüfen und erneut tippen.";
+  };
+  async function tu(fn, ok){
+    if(laeuft) return; laeuft = true; msg("Speichert …");
+    try{ const r = await fn(); if(r && r.error) throw r.error; await laden(); msg(ok, "ok"); }
+    catch(e){ msg(fehlerText(e), "err"); }
+    finally{ laeuft = false; }
+  }
+  const aktive = k => mitglieder.filter(m => m.kolonne_id === k && m.aktiv).sort((a,b) => a.position - b.position || a.angelegt_am.localeCompare(b.angelegt_am));
+  const kontoName = email => { const k = konten.find(x => x.email === email); return k && k.name ? k.name : email; };
+
+  async function laden(){
+    const [k, m] = await Promise.all([
+      sb.from("kolonnen").select("*").eq("aktiv", true).order("nummer"),
+      sb.from("kolonne_mitglieder").select("*").eq("aktiv", true)
+    ]);
+    if(k.error) throw k.error; if(m.error) throw m.error;
+    kolonnen = k.data; mitglieder = m.data;
+    if(chef){ const z = await sb.from("zugang").select("email,name,ist_chef,ist_bauleiter,ist_geraeteverwalter").order("email"); if(!z.error) konten = z.data; }
+    render();
+  }
+
+  function kontoOptionen(sel){
+    return `<option value="">kein Login</option>` + konten.map(k => `<option value="${esc(k.email)}"${k.email === sel ? " selected" : ""}>${esc(k.name ? k.name + " – " + k.email : k.email)}</option>`).join("");
+  }
+
+  function render(){
+    $("ko-anlegen").hidden = !chef; $("ko-konten").hidden = !chef;
+    const liste = $("ko-liste");
+    if(!kolonnen.length){ liste.innerHTML = `<div class="group"><p class="note" style="margin:0">${chef ? "Noch keine Kolonne angelegt." : "Sie sind keiner Kolonne zugeordnet. Bitte bei der Geschäftsführung melden."}</p></div>`; }
+    else liste.innerHTML = kolonnen.map(k => {
+      const ma = aktive(k.id), f = ma[0], v = ma[1];
+      const kopf = `<div class="ko-kopf"><span class="ko-farbe" style="background:${FARBEN[k.farbe] || "#ccc"}"></span><span class="ko-titel">${esc(k.nummer)} / ${esc(k.farbe)}</span><span class="ko-sub" style="margin-left:auto">${ma.length} Mitarbeiter</span></div>`;
+      const fuehrer = `<div class="ko-fuehrer">
+        <div>Kolonnenführer: <b>${f ? esc(f.name) : "–"}</b>${f && !f.email ? ` <span class="ko-warn">(ohne Login, kann keinen Bericht schreiben)</span>` : ""}</div>
+        <div>Vertreter: <b>${v ? esc(v.name) : "–"}</b></div></div>`;
+      const zeilen = ma.map((m, i) => `<div class="ko-ma">
+        <span class="ko-pos">${i + 1}.</span>
+        <div><div class="ko-name">${esc(m.name)}${i === 0 ? '<span class="ko-rolle">Führer</span>' : i === 1 ? '<span class="ko-rolle v">Vertreter</span>' : ""}</div>
+          <div class="ko-sub">${esc(m.funktion || "ohne Funktion")} · ${m.email ? "Login: " + esc(kontoName(m.email)) : "kein Login"}</div>
+          ${chef ? `<label class="ko-sub" style="font-weight:400;margin-top:6px">Login zuordnen<select data-login="${m.id}">${kontoOptionen(m.email)}</select></label>` : ""}</div>
+        ${chef ? `<div class="ko-btns">
+          ${i > 0 ? `<button type="button" data-hoch="${m.id}" aria-label="${esc(m.name)} nach ganz oben">▲ Oben</button>` : ""}
+          <button type="button" class="weg" data-weg="${m.id}">${sicher === m.id ? "Sicher?" : "Raus"}</button></div>` : "<span></span>"}
+      </div>`).join("");
+      const neu = chef ? `<div class="ko-neu">
+        <div class="row">
+          <label>Name<input data-neu-name="${k.id}" autocomplete="off" placeholder="Vor- und Nachname"></label>
+          <label>Funktion<input data-neu-fkt="${k.id}" list="ko-funktionen" autocomplete="off" placeholder="z. B. Tiefbauer"></label>
+        </div>
+        <label>Login <span class="hint">nur wenn die Person selbst schreiben soll</span><select data-neu-login="${k.id}">${kontoOptionen("")}</select></label>
+        <button class="btn" type="button" data-neu="${k.id}">+ Mitarbeiter hinzufügen</button></div>` : "";
+      return `<div class="ko-karte">${kopf}${fuehrer}${zeilen || '<div class="ko-ma"><span></span><span class="ko-sub">Noch keine Mitarbeiter.</span><span></span></div>'}${neu}</div>`;
+    }).join("");
+
+    if(chef){
+      $("ko-konten-liste").innerHTML = konten.map(k => `<div class="ko-konto">
+        <div class="ko-sub">${esc(k.email)}${k.ist_chef ? " · Geschäftsführung" : ""}</div>
+        <div class="addname"><input data-kname="${esc(k.email)}" value="${esc(k.name || "")}" placeholder="Name" autocomplete="off"><button class="btn" type="button" data-kname-ok="${esc(k.email)}">Name speichern</button></div>
+        ${k.ist_chef ? "" : `<div class="ko-checks">
+          <label><input type="checkbox" data-rolle="ist_bauleiter" data-mail="${esc(k.email)}"${k.ist_bauleiter ? " checked" : ""}> Bauleiter</label>
+          <label><input type="checkbox" data-rolle="ist_geraeteverwalter" data-mail="${esc(k.email)}"${k.ist_geraeteverwalter ? " checked" : ""}> Geräteverwalter</label></div>`}
+      </div>`).join("");
+    }
+  }
+
+  $("ko-anlegen-btn").addEventListener("click", () => {
+    const nr = $("ko-nr").value.trim(), farbe = $("ko-farbe").value;
+    if(!nr) return msg("Bitte eine Nummer eintragen.", "err");
+    tu(() => sb.from("kolonnen").insert({ nummer: nr, farbe }), `Kolonne ${nr} / ${farbe} angelegt.`).then(() => { if($("ko-msg").className.includes("ok")) $("ko-nr").value = ""; });
+  });
+
+  document.addEventListener("click", ev => {
+    const t = ev.target.closest("button"); if(!t || !$("view-kolonnen").contains(t)) return;
+    if(t.dataset.neu){
+      const k = t.dataset.neu, name = document.querySelector(`[data-neu-name="${k}"]`).value.trim();
+      const funktion = document.querySelector(`[data-neu-fkt="${k}"]`).value.trim(), email = document.querySelector(`[data-neu-login="${k}"]`).value || null;
+      if(!name) return msg("Bitte den Namen eintragen.", "err");
+      const pos = Math.max(0, ...aktive(k).map(m => m.position)) + 1;
+      tu(() => sb.from("kolonne_mitglieder").insert({ kolonne_id: k, name, funktion, email, position: pos }), `${name} hinzugefügt.`);
+    } else if(t.dataset.hoch){
+      const m = mitglieder.find(x => x.id === t.dataset.hoch);
+      if(!m.email) return msg(`${m.name} hat keinen Login und kann deshalb nicht Kolonnenführer werden. Zuerst einen Login zuordnen.`, "err");
+      const min = Math.min(...aktive(m.kolonne_id).map(x => x.position));
+      tu(() => sb.from("kolonne_mitglieder").update({ position: min - 1 }).eq("id", m.id), `${m.name} ist jetzt Kolonnenführer.`);
+    } else if(t.dataset.weg){
+      const id = t.dataset.weg;
+      if(sicher !== id){ sicher = id; render(); setTimeout(() => { if(sicher === id){ sicher = null; render(); } }, 4000); return; }
+      sicher = null; const m = mitglieder.find(x => x.id === id);
+      tu(() => sb.from("kolonne_mitglieder").update({ aktiv: false }).eq("id", id), `${m.name} aus der Kolonne genommen (bleibt in alten Berichten erhalten).`);
+    } else if(t.dataset.knameOk){
+      const email = t.dataset.knameOk, name = document.querySelector(`[data-kname="${CSS.escape(email)}"]`).value.trim() || null;
+      tu(() => sb.from("zugang").update({ name }).eq("email", email), "Name gespeichert.");
+    }
+  });
+  document.addEventListener("change", ev => {
+    const t = ev.target; if(!$("view-kolonnen").contains(t)) return;
+    if(t.dataset.login){
+      const m = mitglieder.find(x => x.id === t.dataset.login), email = t.value || null;
+      if(!email && aktive(m.kolonne_id)[0] === m){ t.value = m.email || ""; return msg("Der Kolonnenführer braucht einen Login. Zuerst jemand anderen nach oben setzen.", "err"); }
+      tu(() => sb.from("kolonne_mitglieder").update({ email }).eq("id", m.id), "Login zugeordnet.");
+    } else if(t.dataset.rolle){
+      tu(() => sb.from("zugang").update({ [t.dataset.rolle]: t.checked }).eq("email", t.dataset.mail), "Rolle gespeichert.");
+    }
+  });
+
+  if(window.tbBereit) window.tbBereit.then(async x => {
+    sb = x.sb;
+    const r = await sb.rpc("ist_chef"); chef = !r.error && !!r.data;
+    try{ await laden(); }catch(e){ msg("Kolonnen konnten nicht geladen werden. Seite neu laden.", "err"); }
+    document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible") laden().catch(() => {}); });
+  });
+  else msg("Kolonnen gibt es nur in der Online-Version.", "err");
+})();
+</script>
+
+<script>
+/* Ergänzung 22.11.2026 Schritt 2: Kolonnenbericht (Tabellen kolonnen_berichte, kolonnen_gruende, kolonnen_nachtraege) */
+(function(){
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const GRUENDE = ["Urlaub", "krank", "unentschuldigt", "sonstiges"];
+  let sb = null, ich = "", kolonnen = [], mitglieder = [], berichte = [], aktuell = null, gruende = {}, nachtraege = [], laeuft = false;
+  let pausen = [], wetter = [], anw = [];
+
+  const msg = (t, cls) => { const m = $("kb-msg"); m.textContent = t || ""; m.className = "msg " + (cls || ""); };
+  function heute(){ const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); }
+  const fmtD = s => { const d = new Date(s + "T12:00:00"); return isNaN(d) ? s : d.toLocaleDateString("de-DE", { weekday: "short", day: "2-digit", month: "2-digit", year: "numeric" }); };
+  const min = t => { if(!t) return null; const [h, m] = t.slice(0, 5).split(":").map(Number); return h * 60 + m; };
+  const dauer = (v, b) => { const a = min(v), e = min(b); return a == null || e == null || e <= a ? 0 : e - a; };
+  const hm = m => `${Math.floor(m / 60)}:${String(m % 60).padStart(2, "0")} Std.`;
+  const t5 = t => (t || "").slice(0, 5);
+  // Bericht vom Tag X: änderbar bis X+1 18:00 (deutsche Zeit) – die Datenbank prüft das ebenfalls
+  function frist(datum){ const d = new Date(datum + "T12:00:00"); d.setDate(d.getDate() + 1); return d.toISOString().slice(0, 10); }
+  function berlinJetzt(){ const p = new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Berlin", year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false }).format(new Date()); return p.replace(" ", "T"); }
+  const offen = datum => berlinJetzt() < frist(datum) + "T18:00";
+  const kName = id => { const k = kolonnen.find(x => x.id === id); return k ? `${k.nummer} / ${k.farbe}` : "?"; };
+  const aktiveMa = k => mitglieder.filter(m => m.kolonne_id === k && m.aktiv).sort((a, b) => a.position - b.position);
+
+  async function grunddaten(){
+    const [k, m, b] = await Promise.all([
+      sb.from("kolonnen").select("id,nummer,farbe").eq("aktiv", true).order("nummer"),
+      sb.from("kolonne_mitglieder").select("id,kolonne_id,name,funktion,position,aktiv").eq("aktiv", true),
+      sb.from("kolonnen_berichte").select("*").gte("datum", new Date(Date.now() - 45 * 864e5).toISOString().slice(0, 10)).order("datum", { ascending: false })
+    ]);
+    if(k.error || m.error || b.error) throw (k.error || m.error || b.error);
+    kolonnen = k.data; mitglieder = m.data; berichte = b.data;
+    const sel = $("kb-kolonne"), alt = sel.value;
+    sel.innerHTML = kolonnen.map(x => `<option value="${x.id}">${esc(x.nummer)} / ${esc(x.farbe)}</option>`).join("");
+    if(alt && kolonnen.some(x => x.id === alt)) sel.value = alt;
+    $("kb-leer").hidden = kolonnen.length > 0; $("kb-inhalt").hidden = !kolonnen.length;
+    renderListe();
+  }
+
+  async function oeffnen(){
+    const k = $("kb-kolonne").value, d = $("kb-datum").value; if(!k || !d) return;
+    msg("");
+    const r = await sb.from("kolonnen_berichte").select("*").eq("kolonne_id", k).eq("datum", d).maybeSingle();
+    aktuell = r.data || null; gruende = {}; nachtraege = [];
+    if(aktuell){
+      const [g, n] = await Promise.all([
+        sb.from("kolonnen_gruende").select("mitglied_id,grund").eq("bericht_id", aktuell.id),
+        sb.from("kolonnen_nachtraege").select("*").eq("bericht_id", aktuell.id).order("erstellt_am")
+      ]);
+      (g.data || []).forEach(x => gruende[x.mitglied_id] = x.grund); nachtraege = n.data || [];
+      pausen = (aktuell.pausen || []).map(x => ({ ...x })); wetter = (aktuell.wetter || []).map(x => ({ ...x }));
+      $("kb-beginn").value = t5(aktuell.beginn); $("kb-ende").value = t5(aktuell.ende); $("kb-notizen").value = aktuell.notizen || ""; $("kb-meter").value = aktuell.meter ?? "";
+      const bekannte = aktuell.anwesenheit || [];
+      anw = bekannte.map(a => ({ ...a, grund: gruende[a.mitglied_id] || "" }));
+      aktiveMa(k).forEach(m => { if(!anw.some(a => a.mitglied_id === m.id)) anw.push({ mitglied_id: m.id, name: m.name, funktion: m.funktion, anwesend: true }); });
+    } else {
+      pausen = [{ von: "12:00", bis: "12:30" }]; wetter = [];
+      $("kb-beginn").value = "07:00"; $("kb-ende").value = "16:00"; $("kb-notizen").value = ""; $("kb-meter").value = "";
+      anw = aktiveMa(k).map(m => ({ mitglied_id: m.id, name: m.name, funktion: m.funktion, anwesend: true, grund: "" }));
+    }
+    renderForm();
+  }
+
+  function darfAendern(){ return !aktuell || (aktuell.geschrieben_von === ich && !aktuell.nachgetragen && offen(aktuell.datum)); }
+
+  function renderForm(){
+    const d = $("kb-datum").value, edit = darfAendern();
+    let status;
+    if(!aktuell) status = offen(d) ? "Neuer Bericht." : "Neuer Bericht – wird als <b>nachgetragen</b> markiert und kann danach nicht mehr geändert werden.";
+    else if(edit) status = `Bericht von <b>${esc(aktuell.geschrieben_von_name)}</b>. Änderbar bis ${esc(fmtD(frist(aktuell.datum)))}, 18:00 Uhr.`;
+    else status = `Bericht von <b>${esc(aktuell.geschrieben_von_name)}</b>${aktuell.nachgetragen ? ' <span class="kb-tag">nachgetragen</span>' : ""}. Kann nicht mehr geändert werden${aktuell.geschrieben_von !== ich ? " (fremder Eintrag)" : ""}. Ergänzungen unten als Nachtrag.`;
+    $("kb-status").innerHTML = status;
+    $("kb-formular").querySelectorAll("input,select,textarea,button").forEach(el => el.disabled = !edit);
+    $("kb-speichern").hidden = !edit;
+    // Pausen
+    $("kb-pausen").innerHTML = pausen.map((p, i) => `<div class="kb-zeile"><input type="time" data-p="${i}" data-f="von" value="${esc(p.von)}" aria-label="Pause von"><span>bis</span><input type="time" data-p="${i}" data-f="bis" value="${esc(p.bis)}" aria-label="Pause bis"><button type="button" class="kb-x" data-px="${i}" aria-label="Pause entfernen">×</button></div>`).join("") || '<p class="kb-hinweis">Keine Pause eingetragen.</p>';
+    $("kb-wetter").innerHTML = wetter.map((w, i) => `<div class="kb-zeile"><input type="time" data-w="${i}" data-f="von" value="${esc(w.von)}" aria-label="Wetter von"><span>bis</span><input type="time" data-w="${i}" data-f="bis" value="${esc(w.bis)}" aria-label="Wetter bis"><button type="button" class="kb-x" data-wx="${i}" aria-label="Eintrag entfernen">×</button></div>`).join("") || '<p class="kb-hinweis">Keine Wetterbehinderung.</p>';
+    $("kb-anw").innerHTML = anw.map((a, i) => `<div class="kb-ma${a.anwesend ? "" : " weg"}">
+      <div><div class="ko-name">${esc(a.name)}</div><div class="ko-sub">${esc(a.funktion || "")}</div></div>
+      <div class="kb-da"><button type="button" data-da="${i}" aria-pressed="${a.anwesend}">da</button><button type="button" data-nda="${i}" aria-pressed="${!a.anwesend}">nicht da</button></div>
+      ${a.anwesend ? `<div class="kb-voll">${a.beginn || a.ende ? `<div class="kb-zeile"><span>eigene Zeit</span><input type="time" data-a="${i}" data-f="beginn" value="${esc(a.beginn || "")}" aria-label="Beginn ${esc(a.name)}"><span>bis</span><input type="time" data-a="${i}" data-f="ende" value="${esc(a.ende || "")}" aria-label="Ende ${esc(a.name)}"></div>` : `<button type="button" class="kb-link" data-zeit="${i}">andere Arbeitszeit als die Kolonne?</button>`}</div>`
+        : `<label class="kb-voll">Grund <span class="hint">sieht nur die Geschäftsführung</span><select data-grund="${i}"><option value="">bitte wählen</option>${GRUENDE.map(g => `<option${g === a.grund ? " selected" : ""}>${g}</option>`).join("")}</select></label>`}
+    </div>`).join("") || '<p class="kb-hinweis">Diese Kolonne hat noch keine Mitarbeiter.</p>';
+    if(!edit) $("kb-formular").querySelectorAll("input,select,textarea,button").forEach(el => el.disabled = true);
+    rechnen();
+    // Nachträge
+    $("kb-nachtrag-box").hidden = !aktuell;
+    $("kb-nachtraege").innerHTML = nachtraege.map(n => `<div class="kb-nt"><div class="ko-sub">${esc(new Date(n.erstellt_am).toLocaleString("de-DE"))} · ${esc(n.geschrieben_von_name)}</div><div>${esc(n.text).replace(/\n/g, "<br>")}</div></div>`).join("") || '<p class="kb-hinweis">Noch keine Nachträge.</p>';
+    const ntOk = aktuell && aktuell.datum >= new Date(Date.now() - 31 * 864e5).toISOString().slice(0, 10);
+    $("kb-nt-neu").hidden = !ntOk; $("kb-nt-zu").hidden = !!ntOk || !aktuell;
+  }
+
+  function rechnen(){
+    const b = $("kb-beginn").value, e = $("kb-ende").value;
+    const p = pausen.reduce((s, x) => s + dauer(x.von, x.bis), 0), w = wetter.reduce((s, x) => s + dauer(x.von, x.bis), 0);
+    const gesamt = dauer(b, e);
+    $("kb-summe").innerHTML = `Anwesend: <b>${hm(gesamt)}</b> · Pause: <b>${hm(p)}</b> · Arbeitszeit ohne Pause: <b>${hm(Math.max(0, gesamt - p))}</b>${w ? ` · davon Wetterbehinderung: <b>${hm(w)}</b>` : ""}`;
+    const da = anw.filter(a => a.anwesend).length;
+    $("kb-anw-zahl").textContent = `${da} von ${anw.length} da`;
+  }
+
+  function pruefen(){
+    const b = $("kb-beginn").value, e = $("kb-ende").value;
+    if(!b || !e) return "Bitte Beginn und Ende eintragen.";
+    if(min(e) <= min(b)) return "Das Ende muss nach dem Beginn liegen.";
+    for(const p of pausen){ if(!p.von || !p.bis || min(p.bis) <= min(p.von)) return "Bitte bei jeder Pause Beginn und Ende richtig eintragen."; if(min(p.von) < min(b) || min(p.bis) > min(e)) return "Die Pause muss innerhalb der Arbeitszeit liegen."; }
+    for(const w of wetter){ if(!w.von || !w.bis || min(w.bis) <= min(w.von)) return "Bitte bei der Wetterbehinderung Beginn und Ende richtig eintragen."; }
+    for(const a of anw){
+      if(!a.anwesend && !a.grund) return `Bitte für ${a.name} einen Grund wählen.`;
+      if(a.anwesend && (a.beginn || a.ende) && (!a.beginn || !a.ende || min(a.ende) <= min(a.beginn))) return `Bitte bei ${a.name} die eigene Zeit vollständig eintragen.`;
+    }
+    const mt = $("kb-meter").value; if(mt !== "" && !(Number(mt) >= 0 && Number(mt) <= 100000)) return "Bitte bei den Metern eine Zahl eintragen.";
+    if(!$("kb-datum").value || $("kb-datum").value > heute()) return "Das Datum darf nicht in der Zukunft liegen.";
+    return null;
+  }
+
+  async function speichern(){
+    if(laeuft) return; const f = pruefen(); if(f) return msg(f, "err");
+    if(!aktuell && !offen($("kb-datum").value) && $("kb-speichern").dataset.ok !== "1"){
+      $("kb-speichern").dataset.ok = "1"; $("kb-speichern").textContent = "Nachtragen bestätigen";
+      return msg("Dieser Tag liegt mehr als einen Tag zurück. Der Bericht wird als „nachgetragen“ markiert und kann danach nicht mehr geändert werden. Zum Bestätigen noch einmal tippen.", "err");
+    }
+    laeuft = true; $("kb-speichern").disabled = true; msg("Speichert …");
+    const daten = {
+      beginn: $("kb-beginn").value, ende: $("kb-ende").value, pausen, wetter, notizen: $("kb-notizen").value.trim(), meter: $("kb-meter").value === "" ? null : Math.round(Number($("kb-meter").value) * 10) / 10,
+      anwesenheit: anw.map(a => { const o = { mitglied_id: a.mitglied_id, name: a.name, funktion: a.funktion || "", anwesend: !!a.anwesend }; if(a.anwesend && a.beginn && a.ende){ o.beginn = a.beginn; o.ende = a.ende; } return o; })
+    };
+    try{
+      let id;
+      if(aktuell){ const r = await sb.from("kolonnen_berichte").update(daten).eq("id", aktuell.id).select("id"); if(r.error) throw r.error; if(!r.data.length) throw { code: "frist" }; id = aktuell.id; }
+      else { const r = await sb.from("kolonnen_berichte").insert({ ...daten, kolonne_id: $("kb-kolonne").value, datum: $("kb-datum").value }).select("id").single(); if(r.error) throw r.error; id = r.data.id; }
+      const g = anw.filter(a => !a.anwesend || gruende[a.mitglied_id]).map(a => ({ bericht_id: id, mitglied_id: a.mitglied_id, name: a.name, grund: a.anwesend ? null : a.grund }));
+      if(g.length){ const r = await sb.from("kolonnen_gruende").upsert(g); if(r.error) throw { code: "grund", e: r.error }; }
+      await grunddaten(); await oeffnen();
+      msg("Gespeichert.", "ok");
+    }catch(e){
+      const m = (e && e.message) || "";
+      msg(e && e.code === "frist" ? "Nicht gespeichert: Die Frist zum Ändern ist vorbei (Folgetag 18:00 Uhr)." :
+        e && e.code === "grund" ? "Bericht gespeichert, aber die Abwesenheitsgründe nicht. Bitte erneut tippen." :
+        /duplicate|unique/i.test(m) ? "Für diese Kolonne gibt es an diesem Tag schon einen Bericht. Bitte neu laden." :
+        /Zukunft/.test(m) ? "Das Datum darf nicht in der Zukunft liegen." :
+        e && (e.code === "42501" || /row-level|permission/i.test(m)) ? "Keine Berechtigung: Nur der Kolonnenführer dieser Kolonne oder ein Bauleiter darf schreiben." :
+        "Nicht gespeichert. Bitte Verbindung prüfen und erneut tippen.", "err");
+    }finally{ laeuft = false; $("kb-speichern").disabled = false; $("kb-speichern").dataset.ok = ""; $("kb-speichern").textContent = "Kolonnenbericht speichern"; }
+  }
+
+  function renderListe(){
+    $("kb-liste").innerHTML = berichte.slice(0, 40).map(b => {
+      const da = (b.anwesenheit || []).filter(a => a.anwesend).length, alle = (b.anwesenheit || []).length;
+      const p = (b.pausen || []).reduce((s, x) => s + dauer(x.von, x.bis), 0);
+      return `<button type="button" class="kb-karte" data-oeffne="${b.kolonne_id}|${b.datum}">
+        <span class="ko-name">${esc(fmtD(b.datum))} · Kolonne ${esc(kName(b.kolonne_id))}${b.nachgetragen ? ' <span class="kb-tag">nachgetragen</span>' : ""}</span>
+        <span class="ko-sub">${esc(t5(b.beginn))}–${esc(t5(b.ende))} Uhr, Pause ${p} Min.${b.meter != null ? ` · ${String(b.meter).replace(".", ",")} m` : ""} · ${da} von ${alle} da · ${esc(b.geschrieben_von_name)}</span></button>`;
+    }).join("") || '<p class="kb-hinweis">Noch keine Kolonnenberichte.</p>';
+  }
+
+  // Eingaben
+  $("kb-kolonne").addEventListener("change", oeffnen);
+  $("kb-datum").addEventListener("change", oeffnen);
+  $("kb-beginn").addEventListener("input", rechnen); $("kb-ende").addEventListener("input", rechnen);
+  $("kb-pause-neu").addEventListener("click", () => { pausen.push({ von: "", bis: "" }); renderForm(); });
+  $("kb-wetter-neu").addEventListener("click", () => { wetter.push({ von: "", bis: "" }); renderForm(); });
+  $("kb-speichern").addEventListener("click", speichern);
+  $("view-kolonnen").addEventListener("input", ev => {
+    const t = ev.target, f = t.dataset.f; if(!f) return;
+    if(t.dataset.p) pausen[t.dataset.p][f] = t.value; else if(t.dataset.w) wetter[t.dataset.w][f] = t.value; else if(t.dataset.a) anw[t.dataset.a][f] = t.value;
+    rechnen();
+  });
+  $("view-kolonnen").addEventListener("change", ev => {
+    const t = ev.target;
+    if(t.dataset.grund) anw[t.dataset.grund].grund = t.value;
+  });
+  $("view-kolonnen").addEventListener("click", ev => {
+    const t = ev.target.closest("button"); if(!t) return;
+    if(t.dataset.px){ pausen.splice(+t.dataset.px, 1); renderForm(); }
+    else if(t.dataset.wx){ wetter.splice(+t.dataset.wx, 1); renderForm(); }
+    else if(t.dataset.da){ anw[t.dataset.da].anwesend = true; renderForm(); }
+    else if(t.dataset.nda){ const a = anw[t.dataset.nda]; a.anwesend = false; delete a.beginn; delete a.ende; renderForm(); }
+    else if(t.dataset.zeit){ const a = anw[t.dataset.zeit]; a.beginn = $("kb-beginn").value; a.ende = $("kb-ende").value; renderForm(); }
+    else if(t.dataset.oeffne){ const [k, d] = t.dataset.oeffne.split("|"); $("kb-kolonne").value = k; $("kb-datum").value = d; oeffnen(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+    else if(t.dataset.unter){ unter(t.dataset.unter); }
+  });
+  $("kb-nt-ok").addEventListener("click", async () => {
+    const text = $("kb-nt-text").value.trim(); if(!text) return msg("Bitte den Nachtrag eintragen.", "err");
+    if(laeuft) return; laeuft = true; msg("Speichert …");
+    const r = await sb.from("kolonnen_nachtraege").insert({ bericht_id: aktuell.id, text });
+    laeuft = false;
+    if(r.error) return msg("Nachtrag nicht gespeichert. Nachträge sind nur bis einen Monat nach dem Berichtstag möglich.", "err");
+    $("kb-nt-text").value = ""; await oeffnen(); msg("Nachtrag gespeichert. Er kann nicht mehr geändert werden.", "ok");
+  });
+
+  function unter(w){
+    $("kb-bereich").hidden = w !== "bericht"; $("ko-verw").hidden = w !== "verwaltung"; $("kt-bereich").hidden = w !== "technik";
+    if(w === "technik" && window.tbTechnikLaden) window.tbTechnikLaden();
+    document.querySelectorAll("#ko-unter button").forEach(b => b.setAttribute("aria-selected", b.dataset.unter === w));
+    if(w === "bericht") grunddaten().then(oeffnen).catch(() => {});
+  }
+
+  // Spracheingabe über die Spracherkennung des Handys/Browsers
+  (function(){
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if(!SR){ $("kb-sprache").hidden = true; $("kb-mikro-info").textContent = "Spracheingabe: das Mikrofon auf der Handy-Tastatur benutzen."; return; }
+    let rec = null;
+    try{ const l = localStorage.getItem("tb-sprache"); if(l) $("kb-sprache-wahl").value = l; }catch(e){}
+    $("kb-sprache-wahl").addEventListener("change", () => { try{ localStorage.setItem("tb-sprache", $("kb-sprache-wahl").value); }catch(e){} });
+    const aus = () => { $("kb-mikro").classList.remove("an"); $("kb-mikro").textContent = "🎤 Sprechen"; rec = null; };
+    $("kb-mikro").addEventListener("click", () => {
+      if(rec){ rec.stop(); return; }
+      rec = new SR(); rec.lang = $("kb-sprache-wahl").value; rec.interimResults = false; rec.continuous = true;
+      rec.onresult = ev => {
+        let t = ""; for(let i = ev.resultIndex; i < ev.results.length; i++) if(ev.results[i].isFinal) t += ev.results[i][0].transcript;
+        t = t.trim(); if(!t) return;
+        const f = $("kb-notizen"); f.value = (f.value ? f.value.replace(/\s+$/, "") + " " : "") + t.charAt(0).toUpperCase() + t.slice(1);
+      };
+      rec.onerror = ev => { $("kb-mikro-info").textContent = ev.error === "not-allowed" ? "Mikrofon nicht erlaubt. Bitte in den Einstellungen des Browsers erlauben." : "Spracheingabe hat nicht geklappt. Bitte noch einmal tippen."; };
+      rec.onend = aus;
+      try{ rec.start(); $("kb-mikro").classList.add("an"); $("kb-mikro").textContent = "⏹ Fertig"; $("kb-mikro-info").textContent = "Sprechen Sie jetzt. Zum Beenden auf „Fertig“ tippen."; }
+      catch(e){ aus(); }
+    });
+  })();
+  $("kb-datum").max = heute(); $("kb-datum").value = heute();
+  if(window.tbBereit) window.tbBereit.then(async x => {
+    sb = x.sb; ich = x.email.toLowerCase();
+    const n = await sb.rpc("mein_name"); $("kb-wer").textContent = (n.data || ich);
+    try{ await grunddaten(); await oeffnen(); }catch(e){ msg("Kolonnenberichte konnten nicht geladen werden. Seite neu laden.", "err"); }
+    document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible" && !$("kb-bereich").hidden) grunddaten().catch(() => {}); });
+  });
+})();
+</script>
+
+<script>
+/* Ergänzung 22.11.2026 Schritt 6: Technik (Tabellen geraete, geraete_uebergaben, geraete_nutzung_log; Übergaben nur über Datenbankfunktionen) */
+(function(){
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const ARTEN = ["Bagger","Minibagger","Radlader","Dumper","LKW","Transporter","PKW","Tankwagen","Erdrakete","Rüttelplatte","Kanister","Sonstige"];
+  const FARBEN = { Gelb:"#f2c200", Blau:"#1971c2", Rot:"#c92a2a", "Grün":"#2b8a3e", Orange:"#e8590c", Lila:"#7048e8", Braun:"#8d5524", Grau:"#868e96", "Weiß":"#ffffff", Schwarz:"#222222" };
+  const NUTZ = ["benutzt", "unbenutzt", "gelagert"];
+  let sb = null, ich = "", verwalter = false, geraete = [], uebergaben = [], kolonnen = [], fuehrer = {}, fuehrerLogin = {}, fuehrerVon = {}, laeuft = false, offenVerlauf = null, spaeter = false;
+  const zeit = s => new Date(s).toLocaleString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+  const kName = id => { if(!id) return "Lager / Geräteverwalter"; const k = kolonnen.find(x => x.id === id); return k ? `Kolonne ${k.nummer} / ${k.farbe}` : "Kolonne ?"; };
+  const gName = g => g ? (g.bezeichnung && g.bezeichnung !== g.art ? `${g.art} – ${g.bezeichnung}` : g.art) : "Gerät";
+  const offeneVon = g => uebergaben.find(u => u.geraet_id === g && u.status === "offen");
+  const letzteAn = g => uebergaben.find(u => u.geraet_id === g && u.status === "bestaetigt");
+  const fehler = e => {
+    const m = (e && e.message) || "";
+    if(/empfangende Seite/.test(m)) return "Nur die empfangende Seite kann bestätigen.";
+    if(/ohne Login/.test(m)) return "Nicht ausgegeben: Der Kolonnenführer dieser Kolonne hat keinen Login und könnte nicht bestätigen. Bitte zuerst unter „Kolonne → Kolonnen & Leute“ jemanden mit Login nach oben setzen.";
+    if(/nicht offen/.test(m)) return "Diese Übergabe ist schon erledigt. Seite neu laden.";
+    if(/duplicate|unique/i.test(m)) return "Für dieses Gerät ist schon eine Übergabe offen.";
+    if(/Kolonnenführer/.test(m)) return "Das kann nur der Kolonnenführer dieser Kolonne.";
+    if(/Berechtigung|permission|row-level/i.test(m)) return "Keine Berechtigung.";
+    return "Nicht gespeichert. Bitte Verbindung prüfen und erneut tippen.";
+  };
+  async function tu(fn, ok, msgId){
+    if(laeuft) return false; laeuft = true; const m = $(msgId); m.textContent = "Speichert …"; m.className = "msg";
+    try{ const r = await fn(); if(r && r.error) throw r.error; await laden(); m.textContent = ok; m.className = "msg ok"; return true; }
+    catch(e){ m.textContent = fehler(e); m.className = "msg err"; return false; }
+    finally{ laeuft = false; }
+  }
+  async function laden(){
+    const [g, u, k, m] = await Promise.all([
+      sb.from("geraete").select("*").eq("aktiv", true).order("art").order("bezeichnung"),
+      sb.from("geraete_uebergaben").select("*").order("gegeben_am", { ascending: false }).limit(500),
+      sb.from("kolonnen").select("id,nummer,farbe").eq("aktiv", true).order("nummer"),
+      sb.from("kolonne_mitglieder").select("kolonne_id,name,email,position,angelegt_am").eq("aktiv", true)
+    ]);
+    if(g.error || u.error || k.error) throw (g.error || u.error || k.error);
+    geraete = g.data; uebergaben = u.data; kolonnen = k.data;
+    fuehrer = {}; fuehrerLogin = {}; (m.data || []).sort((a, b) => a.position - b.position || String(a.angelegt_am).localeCompare(String(b.angelegt_am))).forEach(x => { if(!(x.kolonne_id in fuehrer)){ fuehrer[x.kolonne_id] = x.name; fuehrerLogin[x.kolonne_id] = !!x.email; } });
+    const f = await Promise.all(kolonnen.map(x => sb.rpc("ist_kolonnenfuehrer", { k: x.id })));
+    fuehrerVon = {}; kolonnen.forEach((x, i) => fuehrerVon[x.id] = !f[i].error && !!f[i].data);
+    renderVerwalter(); renderKolonne(); renderPopup();
+  }
+  const badge = n => `<span class="tg-n tg-${n}">${esc(n)}</span>`;
+  function verlauf(g){
+    const l = uebergaben.filter(u => u.geraet_id === g);
+    return `<div class="tg-verlauf">${l.map(u => `<div><b>${esc(zeit(u.gegeben_am))}</b> ${esc(u.gegeben_von_name)} gibt: ${esc(kName(u.von_kolonne))} → ${esc(kName(u.an_kolonne))}${u.empfaenger_name ? ` (an ${esc(u.empfaenger_name)})` : ""}<br>
+      <span class="ko-sub">${u.status === "offen" ? "wartet auf Bestätigung" : `${u.status === "bestaetigt" ? "bestätigt" : u.status === "abgelehnt" ? "abgelehnt" : "zurückgezogen"} von ${esc(u.erledigt_von_name)}, ${esc(zeit(u.erledigt_am))}`}</span></div>`).join("") || '<span class="ko-sub">Noch keine Übergaben.</span>'}</div>`;
+  }
+  const verlaufKnopf = g => `<button type="button" class="kb-link" data-tg-verlauf="${g.id}">${offenVerlauf === g.id ? "Verlauf ausblenden" : "Verlauf anzeigen"}</button>${offenVerlauf === g.id ? verlauf(g.id) : ""}`;
+
+  // ---------- Reiter Technik (nur Geräteverwalter / Geschäftsführung) ----------
+  function empfVorbelegen(){
+    const k = $("tg-kol").value; $("tg-empf").value = fuehrer[k] || "";
+    const m = $("tg-msg");
+    if(k && !fuehrerLogin[k]){ m.textContent = `Achtung: ${fuehrer[k] || "Der Kolonnenführer"} hat keinen Login und kann den Empfang nicht bestätigen. Zuerst unter „Kolonne → Kolonnen & Leute“ jemanden mit Login nach oben setzen.`; m.className = "msg err"; }
+    else if(m.className.includes("err")){ m.textContent = ""; m.className = "msg"; }
+  }
+  function renderVerwalter(){
+    if(!verwalter) return;
+    const alt = $("tg-kol").value;
+    $("tg-kol").innerHTML = `<option value="">bitte wählen</option>` + kolonnen.map(k => `<option value="${k.id}">${esc(k.nummer)} / ${esc(k.farbe)}</option>`).join("");
+    if(alt && kolonnen.some(k => k.id === alt)) $("tg-kol").value = alt;
+    const raus = uebergaben.filter(u => u.status === "offen" && u.an_kolonne);
+    $("tg-wartet").innerHTML = raus.length ? raus.map(u => { const g = geraete.find(x => x.id === u.geraet_id); return `<div class="tg-offen">
+      ⏳ <b>${esc(gName(g))}</b> an ${esc(kName(u.an_kolonne))}${u.empfaenger_name ? ` (${esc(u.empfaenger_name)})` : ""}<br><span class="ko-sub">ausgegeben ${esc(zeit(u.gegeben_am))} von ${esc(u.gegeben_von_name)}</span>
+      ${u.gegeben_von === ich ? `<div class="ko-btns" style="margin-top:8px"><button type="button" data-tg-zurueckziehen="${u.id}">Zurückziehen</button></div>` : ""}</div>`; }).join("") : '<p class="kb-hinweis">Nichts offen.</p>';
+    const rein = uebergaben.filter(u => u.status === "offen" && !u.an_kolonne);
+    $("tg-eingang").innerHTML = rein.length ? rein.map(u => { const g = geraete.find(x => x.id === u.geraet_id); return `<div class="tg-offen">
+      <b>${esc(gName(g))}</b> wird von ${esc(kName(u.von_kolonne))} zurückgegeben (${esc(u.gegeben_von_name)}, ${esc(zeit(u.gegeben_am))})
+      <div class="ko-btns" style="margin-top:8px"><button type="button" data-tg-ok="${u.id}">✔ Erhalten</button><button type="button" class="weg" data-tg-nein="${u.id}">Nicht erhalten</button></div></div>`; }).join("") : '<p class="kb-hinweis">Keine offenen Rückgaben.</p>';
+    $("tg-liste").innerHTML = kolonnen.map(k => {
+      const l = geraete.filter(g => g.kolonne_id === k.id);
+      return `<div class="tg-gruppe"><h3><span class="ko-farbe" style="background:${FARBEN[k.farbe] || "#ccc"};width:20px;height:20px"></span>Kolonne ${esc(k.nummer)} / ${esc(k.farbe)} <span class="ko-sub" style="margin-left:auto">${l.length} Geräte</span></h3>
+        ${l.map(g => { const u = letzteAn(g.id); return `<div class="tg-karte"><div class="tg-kopf"><div class="ko-name">${esc(gName(g))}</div>${badge(g.nutzung)}</div>
+          <div class="ko-sub">bestätigt${u ? ` von ${esc(u.erledigt_von_name)}, ${esc(zeit(u.erledigt_am))}` : ""}${u && u.empfaenger_name ? ` · Empfänger: ${esc(u.empfaenger_name)}` : ""}</div>
+          ${offeneVon(g.id) ? '<div class="tg-offen">⏳ Rückgabe angemeldet, oben bestätigen</div>' : ""}${verlaufKnopf(g)}</div>`; }).join("") || '<p class="kb-hinweis">Keine Geräte.</p>'}</div>`;
+    }).join("") || '<p class="kb-hinweis">Noch keine Kolonnen angelegt.</p>';
+  }
+  $("tg-art").innerHTML = ARTEN.map(a => `<option>${a}</option>`).join("");
+  $("tg-kol").addEventListener("change", empfVorbelegen);
+  $("tg-ausgeben").addEventListener("click", async () => {
+    const k = $("tg-kol").value, art = $("tg-art").value;
+    if(!k){ $("tg-msg").textContent = "Bitte die Kolonne wählen."; $("tg-msg").className = "msg err"; return; }
+    const ok = await tu(() => sb.rpc("geraet_ausgeben_neu", { p_art: art, p_bezeichnung: $("tg-nr").value.trim(), k, p_empfaenger: $("tg-empf").value.trim() }),
+      `${art} an ${kName(k)} ausgegeben. Wartet auf Bestätigung durch den Kolonnenführer.`, "tg-msg");
+    if(ok){ $("tg-nr").value = ""; }
+  });
+
+  // ---------- Unterreiter Technik in "Kolonne" ----------
+  function renderKolonne(){
+    const sel = $("kt-kolonne"), alt = sel.value;
+    sel.innerHTML = kolonnen.map(k => `<option value="${k.id}">${esc(k.nummer)} / ${esc(k.farbe)}</option>`).join("");
+    if(alt && kolonnen.some(k => k.id === alt)) sel.value = alt;
+    else { const eigene = kolonnen.find(k => fuehrerVon[k.id]); if(eigene) sel.value = eigene.id; }
+    const k = sel.value, istF = !!fuehrerVon[k];
+    $("kt-leer").hidden = kolonnen.length > 0;
+    $("kt-rolle").textContent = !k ? "" : istF ? "Sie sind Kolonnenführer dieser Kolonne." : "Nur ansehen: Bestätigen und Zurückgeben kann nur der Kolonnenführer.";
+    const rein = uebergaben.filter(u => u.status === "offen" && u.an_kolonne === k);
+    $("kt-eingang").innerHTML = rein.length ? rein.map(u => { const g = geraete.find(x => x.id === u.geraet_id); return `<div class="tg-offen">
+      <b>${esc(gName(g))}</b> von ${esc(u.gegeben_von_name)}, ${esc(zeit(u.gegeben_am))}
+      ${istF ? `<div class="ko-btns" style="margin-top:8px"><button type="button" data-kt-ok="${u.id}">✔ Erhalten</button><button type="button" class="weg" data-kt-nein="${u.id}">Nicht erhalten</button></div>` : ""}</div>`; }).join("") : '<p class="kb-hinweis">Nichts zu bestätigen.</p>';
+    const meine = geraete.filter(g => g.kolonne_id === k);
+    $("kt-zahl").textContent = meine.length ? `(${meine.length})` : "";
+    renderBerichtTechnik();
+    $("kt-liste").innerHTML = meine.map(g => { const o = offeneVon(g.id), u = letzteAn(g.id); return `<div class="tg-karte">
+      <div class="tg-kopf"><div><div class="ko-name">${esc(gName(g))}</div><div class="ko-sub">${u ? `erhalten ${esc(zeit(u.erledigt_am))} · ` : ""}<b>noch nicht zurückgegeben</b></div></div>${badge(g.nutzung)}</div>
+      ${o ? `<div class="tg-offen">⏳ Rückgabe wartet auf Bestätigung durch den Geräteverwalter</div>${istF && o.gegeben_von === ich ? `<div class="ko-btns"><button type="button" data-kt-zurueckziehen="${o.id}">Rückgabe zurückziehen</button></div>` : ""}`
+        : istF ? `<div class="tg-nutz" role="group" aria-label="Nutzung">${NUTZ.map(n => `<button type="button" data-kt-nutz="${g.id}|${n}" aria-pressed="${g.nutzung === n}" class="tg-${n}">${n}</button>`).join("")}</div>
+        <button class="btn" type="button" data-kt-zurueck="${g.id}">An Geräteverwalter zurückgeben</button>` : ""}
+      ${verlaufKnopf(g)}</div>`; }).join("") || '<p class="kb-hinweis">Diese Kolonne hat zurzeit keine Geräte.</p>';
+  }
+
+  // Kurzliste im Kolonnenbericht: welche Technik hat die gewählte Kolonne gerade
+  function renderBerichtTechnik(){
+    const k = $("kb-kolonne").value, l = geraete.filter(g => g.kolonne_id === k);
+    const w = uebergaben.filter(u => u.status === "offen" && u.an_kolonne === k).length;
+    $("kb-technik").hidden = !k || (!l.length && !w);
+    $("kb-technik").innerHTML = `<b>Technik bei der Kolonne (noch nicht zurückgegeben):</b> ${l.length ? l.map(g => esc(gName(g)) + " " + `<span class="tg-n tg-${g.nutzung}">${esc(g.nutzung)}</span>`).join(", ") : "keine"}${w ? `<br>⏳ ${w} Gerät(e) warten auf Bestätigung („Technik“ oben).` : ""}`;
+  }
+  $("kb-kolonne").addEventListener("change", renderBerichtTechnik);
+
+  // ---------- Hinweisfenster beim Öffnen: "Technik erhalten? Bestätigen" ----------
+  function renderPopup(){
+    const offen = uebergaben.filter(u => u.status === "offen" && u.an_kolonne && fuehrerVon[u.an_kolonne]);
+    if(!offen.length || spaeter){ $("tg-popup").hidden = true; return; }
+    $("tg-popup-liste").innerHTML = offen.map(u => { const g = geraete.find(x => x.id === u.geraet_id); return `<div class="tg-offen">
+      <div class="ko-name">${esc(gName(g))}</div>
+      <div class="ko-sub">für ${esc(kName(u.an_kolonne))} · ausgegeben von ${esc(u.gegeben_von_name)}, ${esc(zeit(u.gegeben_am))}</div>
+      <div class="ko-btns" style="margin-top:8px"><button type="button" data-kt-ok="${u.id}" data-popup="1">✔ Erhalten</button><button type="button" class="weg" data-kt-nein="${u.id}" data-popup="1">Nicht erhalten</button></div></div>`; }).join("");
+    $("tg-popup").hidden = false;
+  }
+  $("tg-popup-spaeter").addEventListener("click", () => { spaeter = true; $("tg-popup").hidden = true; });
+
+  document.addEventListener("click", ev => {
+    const t = ev.target.closest("button"); if(!t) return; const d = t.dataset;
+    const mk = d.popup ? "tg-popup-msg" : "kt-msg";
+    if(d.tgVerlauf){ offenVerlauf = offenVerlauf === d.tgVerlauf ? null : d.tgVerlauf; renderVerwalter(); renderKolonne(); }
+    else if(d.tgOk) tu(() => sb.rpc("uebergabe_erledigen", { u: d.tgOk, aktion: "bestaetigt" }), "Rückgabe bestätigt.", "tg-msg");
+    else if(d.tgNein) tu(() => sb.rpc("uebergabe_erledigen", { u: d.tgNein, aktion: "abgelehnt" }), "Abgelehnt. Gerät bleibt bei der Kolonne.", "tg-msg");
+    else if(d.tgZurueckziehen) tu(() => sb.rpc("uebergabe_erledigen", { u: d.tgZurueckziehen, aktion: "zurueckgezogen" }), "Ausgabe zurückgezogen.", "tg-msg");
+    else if(d.ktOk) tu(() => sb.rpc("uebergabe_erledigen", { u: d.ktOk, aktion: "bestaetigt" }), "Empfang bestätigt.", mk);
+    else if(d.ktNein) tu(() => sb.rpc("uebergabe_erledigen", { u: d.ktNein, aktion: "abgelehnt" }), "Als „nicht erhalten“ gemeldet.", mk);
+    else if(d.ktZurueckziehen) tu(() => sb.rpc("uebergabe_erledigen", { u: d.ktZurueckziehen, aktion: "zurueckgezogen" }), "Rückgabe zurückgezogen.", "kt-msg");
+    else if(d.ktZurueck) tu(() => sb.rpc("geraet_zurueckgeben", { g: d.ktZurueck }), "Rückgabe angemeldet. Der Geräteverwalter muss bestätigen.", "kt-msg");
+    else if(d.ktNutz){ const [g, n] = d.ktNutz.split("|"); tu(() => sb.rpc("geraet_nutzung", { g, n }), `Als „${n}“ markiert.`, "kt-msg"); }
+  });
+  $("kt-kolonne").addEventListener("change", renderKolonne);
+
+  if(window.tbBereit) window.tbBereit.then(async x => {
+    sb = x.sb; ich = x.email.toLowerCase();
+    const r = await sb.rpc("ist_geraeteverwalter"); verwalter = !r.error && !!r.data;
+    $("tab-technik").hidden = !verwalter;
+    if(!verwalter && !$("view-technik").hidden) $("tab-form").click();
+    try{ await laden(); empfVorbelegen(); }catch(e){}
+    document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible"){ spaeter = false; laden().catch(() => {}); } });
+    window.tbTechnikLaden = () => laden().catch(() => {});
+  });
 })();
 </script>
 
