@@ -416,7 +416,7 @@ button:disabled,input:disabled,select:disabled,textarea:disabled{opacity:.65}
             <label for="datum"><span class="req">Datum</span><input type="date" id="datum" required></label>
             <label>Kalenderwoche<div class="kw" id="kw">–</div></label>
           </div>
-          <label for="bauleiter"><span class="req">Verantwortlicher Bauleiter</span>
+          <label for="bauleiter"><span class="req">Verantwortliche/r der Kolonne</span>
             <input id="bauleiter" list="bauleiter-liste" autocomplete="off" placeholder="Name" required>
             <datalist id="bauleiter-liste"></datalist>
           </label>
@@ -545,7 +545,7 @@ button:disabled,input:disabled,select:disabled,textarea:disabled{opacity:.65}
   <!-- Übersicht für die Geschäftsführung -->
   <section class="view" id="view-list" hidden>
     <div class="filters">
-      <label for="flt-bl">Bauleiter<select id="flt-bl"><option value="">Alle</option></select></label>
+      <label for="flt-bl">Verantwortlich<select id="flt-bl"><option value="">Alle</option></select></label>
       <label for="flt-kw">Kalenderwoche<select id="flt-kw"><option value="">Alle</option></select></label>
     </div>
     <div id="list" style="display:grid;gap:10px"></div>
@@ -926,7 +926,7 @@ button:disabled,input:disabled,select:disabled,textarea:disabled{opacity:.65}
   function pruefen(){
     document.querySelectorAll(".field-err").forEach(el => el.classList.remove("field-err"));
     const fehlt = [];
-    [["datum","Datum"],["bauleiter","Bauleiter"],["adresse","Projektadresse"],["beginn","Beginn"],["ende","Ende"]].forEach(([id,name]) => {
+    [["datum","Datum"],["bauleiter","Verantwortliche/r der Kolonne"],["adresse","Projektadresse"],["beginn","Beginn"],["ende","Ende"]].forEach(([id,name]) => {
       if(!$(id).value.trim()){ fehlt.push(name); $(id).closest("label").classList.add("field-err"); }
     });
     if(fehlt.length) return "Bitte ausfüllen: " + fehlt.join(", ") + ".";
