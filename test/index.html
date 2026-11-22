@@ -1586,7 +1586,6 @@ Beschädigt von: ${esc(Array.isArray(k.verursacher) ? k.verursacher.join(", ") :
   const $ = id => document.getElementById(id);
   const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
   const GRUENDE = ["Urlaub", "krank", "unentschuldigt", "sonstiges"];
-  const WETTER = ["Regen", "Starkregen", "Frost", "Schnee", "Sturm", "Hitze", "Gewitter"];
   let sb = null, ich = "", kolonnen = [], mitglieder = [], berichte = [], aktuell = null, gruende = {}, nachtraege = [], laeuft = false;
   let pausen = [], wetter = [], anw = [];
 
@@ -1656,8 +1655,7 @@ Beschädigt von: ${esc(Array.isArray(k.verursacher) ? k.verursacher.join(", ") :
     $("kb-speichern").hidden = !edit;
     // Pausen
     $("kb-pausen").innerHTML = pausen.map((p, i) => `<div class="kb-zeile"><input type="time" data-p="${i}" data-f="von" value="${esc(p.von)}" aria-label="Pause von"><span>bis</span><input type="time" data-p="${i}" data-f="bis" value="${esc(p.bis)}" aria-label="Pause bis"><button type="button" class="kb-x" data-px="${i}" aria-label="Pause entfernen">×</button></div>`).join("") || '<p class="kb-hinweis">Keine Pause eingetragen.</p>';
-    $("kb-wetter").innerHTML = wetter.map((w, i) => `<div class="kb-zeile"><input type="time" data-w="${i}" data-f="von" value="${esc(w.von)}" aria-label="Wetter von"><span>bis</span><input type="time" data-w="${i}" data-f="bis" value="${esc(w.bis)}" aria-label="Wetter bis"><button type="button" class="kb-x" data-wx="${i}" aria-label="Eintrag entfernen">×</button>
-      <select data-w="${i}" data-f="art" class="kb-art">${WETTER.map(a => `<option${a === w.art ? " selected" : ""}>${a}</option>`).join("")}</select></div>`).join("") || '<p class="kb-hinweis">Keine Wetterbehinderung.</p>';
+    $("kb-wetter").innerHTML = wetter.map((w, i) => `<div class="kb-zeile"><input type="time" data-w="${i}" data-f="von" value="${esc(w.von)}" aria-label="Wetter von"><span>bis</span><input type="time" data-w="${i}" data-f="bis" value="${esc(w.bis)}" aria-label="Wetter bis"><button type="button" class="kb-x" data-wx="${i}" aria-label="Eintrag entfernen">×</button></div>`).join("") || '<p class="kb-hinweis">Keine Wetterbehinderung.</p>';
     $("kb-anw").innerHTML = anw.map((a, i) => `<div class="kb-ma${a.anwesend ? "" : " weg"}">
       <div><div class="ko-name">${esc(a.name)}</div><div class="ko-sub">${esc(a.funktion || "")}</div></div>
       <div class="kb-da"><button type="button" data-da="${i}" aria-pressed="${a.anwesend}">da</button><button type="button" data-nda="${i}" aria-pressed="${!a.anwesend}">nicht da</button></div>
@@ -1741,7 +1739,7 @@ Beschädigt von: ${esc(Array.isArray(k.verursacher) ? k.verursacher.join(", ") :
   $("kb-datum").addEventListener("change", oeffnen);
   $("kb-beginn").addEventListener("input", rechnen); $("kb-ende").addEventListener("input", rechnen);
   $("kb-pause-neu").addEventListener("click", () => { pausen.push({ von: "", bis: "" }); renderForm(); });
-  $("kb-wetter-neu").addEventListener("click", () => { wetter.push({ von: "", bis: "", art: "Regen" }); renderForm(); });
+  $("kb-wetter-neu").addEventListener("click", () => { wetter.push({ von: "", bis: "" }); renderForm(); });
   $("kb-speichern").addEventListener("click", speichern);
   $("view-kolonnen").addEventListener("input", ev => {
     const t = ev.target, f = t.dataset.f; if(!f) return;
@@ -1751,7 +1749,6 @@ Beschädigt von: ${esc(Array.isArray(k.verursacher) ? k.verursacher.join(", ") :
   $("view-kolonnen").addEventListener("change", ev => {
     const t = ev.target;
     if(t.dataset.grund) anw[t.dataset.grund].grund = t.value;
-    else if(t.dataset.w && t.dataset.f === "art") wetter[t.dataset.w].art = t.value;
   });
   $("view-kolonnen").addEventListener("click", ev => {
     const t = ev.target.closest("button"); if(!t) return;
